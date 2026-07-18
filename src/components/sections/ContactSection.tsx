@@ -8,7 +8,7 @@ export function ContactSection() {
   return (
     <section id="contato" className="py-20 bg-background-deep border-t border-border/20">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
           
           {/* Location */}
           <div className="flex flex-col">
@@ -77,16 +77,7 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Map Area */}
-          <div className="relative h-64 lg:h-auto border border-border/20 overflow-hidden bg-[#1f2937] flex items-center justify-center grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-            {/* Placeholder styled block for Map since real URL not provided */}
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHBhdGggZD0iTTAgMGgyMHYyMEgwem0xMCAxMGgxMHYxMEgxMHoiIGZpbGw9IiMzNzQxNTEiIGZpbGwtb3BhY2l0eT0iMC40IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=')] opacity-20"></div>
-            <div className="absolute w-full h-full inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center animate-pulse">
-                <MapPin className="text-primary" size={24} />
-              </div>
-            </div>
-          </div>
+
         </div>
       </Container>
     </section>

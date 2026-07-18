@@ -7,7 +7,7 @@ import { siteConfig } from "@/config/site";
 
 export function HeroSection() {
   return (
-    <section id="inicio" className="relative min-h-screen pt-24 pb-12 flex flex-col justify-center overflow-hidden bg-background">
+    <section id="inicio" className="relative min-h-[100dvh] pt-32 lg:pt-48 pb-12 flex flex-col justify-center overflow-hidden bg-background">
       
       {/* Background Image Setup */}
       <div className="absolute inset-0 z-0">
@@ -27,7 +27,7 @@ export function HeroSection() {
       </div>
 
       <Container className="relative z-20 flex-grow flex flex-col justify-center">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center h-full">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center flex-grow">
           
           {/* Left Content */}
           <div className="max-w-2xl pt-12 lg:pt-0">
@@ -72,13 +72,13 @@ export function HeroSection() {
           </div>
 
           {/* Right Area (Brand Seal on Desktop) */}
-          <div className="hidden lg:flex justify-end items-end h-full pb-12">
+          <div className="hidden lg:flex justify-end items-end pb-12">
             <BrandSeal className="mr-8 xl:mr-16 mb-16" />
           </div>
         </div>
 
         {/* Bottom features bar */}
-        <div className="mt-auto lg:absolute lg:bottom-12 lg:left-0 lg:w-1/2 pt-12 border-t border-white/10 lg:border-none">
+        <div className="mt-12 lg:mt-16 lg:w-1/2 pt-8 lg:pt-12 border-t border-white/10 lg:border-none">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:pr-8">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded border border-white/20 flex items-center justify-center text-gold-soft flex-shrink-0">
