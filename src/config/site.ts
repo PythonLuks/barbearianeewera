@@ -3,7 +3,7 @@ export const siteConfig = {
   slogan: "SEU ESTILO, NOSSA MISSÃO.",
   description: "Corte, barba e estilo com técnica, precisão e personalidade.",
   phone: "+55 81 98306-6353",
-  whatsappUrl: "https://wa.me/5581983066353",
+  whatsappUrl: "https://wa.me/5581983066353?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Neew%20Era%20Barbershop%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio.",
   instagram: "@neew_erabarbershop",
   instagramUrl: "https://www.instagram.com/neew_erabarbershop/",
   address: {

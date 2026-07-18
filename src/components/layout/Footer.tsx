@@ -51,9 +51,6 @@ export function Footer() {
             <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-white/10 text-white hover:border-gold-soft hover:text-gold-soft transition-colors" aria-label="Instagram">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             </a>
-            <a href="#" className="p-3 rounded-full border border-white/10 text-white hover:border-gold-soft hover:text-gold-soft transition-colors" aria-label="Facebook">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-            </a>
             <a href={siteConfig.whatsappUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-white/10 text-white hover:border-gold-soft hover:text-gold-soft transition-colors" aria-label="WhatsApp">
               <MessageCircle size={20} strokeWidth={1.5} />
             </a>
