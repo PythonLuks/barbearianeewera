@@ -8,9 +8,15 @@ export default async function AdminDashboard() {
   await checkAuth();
   const appointments = await db.getAppointments();
   
-  // Calculate stats for today
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Calculate stats for today using correct Timezone (Brazil)
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' }); // Returns YYYY-MM-DD
   const todayAppointments = appointments.filter(a => a.date === todayStr);
+  
+  // Upcoming appointments (today and future)
+  const upcomingAppointments = appointments.filter(a => a.date >= todayStr).sort((a, b) => {
+    if (a.date !== b.date) return new Date(a.date).getTime() - new Date(b.date).getTime();
+    return a.time.localeCompare(b.time);
+  }).slice(0, 10);
   
   const pending = todayAppointments.filter(a => a.status === "PENDENTE").length;
   const confirmed = todayAppointments.filter(a => a.status === "CONFIRMADO").length;
@@ -23,7 +29,7 @@ export default async function AdminDashboard() {
       .map(a => a.customerPhone)
   ).size;
 
-  const formattedDate = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const formattedDate = new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   const stats = [
     { title: "Agendamentos Hoje", value: todayAppointments.length, icon: CalendarDays, color: "text-blue-400" },
@@ -63,9 +69,9 @@ export default async function AdminDashboard() {
           <h2 className="text-lg font-serif text-white">Próximos Atendimentos</h2>
         </div>
         
-        {todayAppointments.length === 0 ? (
+        {upcomingAppointments.length === 0 ? (
           <div className="p-8 text-center text-muted">
-            Nenhum agendamento para hoje.
+            Nenhum agendamento futuro encontrado.
           </div>
         ) : (
           <div className="overflow-x-auto custom-scrollbar">
@@ -79,14 +85,19 @@ export default async function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/10">
-                {todayAppointments.map((app, idx) => (
+                {upcomingAppointments.map((app, idx) => (
                   <tr key={idx} className="hover:bg-white/5 transition-colors text-sm">
                     <td className="px-5 py-4">
                       <div className="font-medium text-white">{app.customerName}</div>
                       <div className="text-muted text-xs mt-0.5">{app.customerPhone}</div>
                     </td>
-                    <td className="px-5 py-4 text-white/80">{app.serviceTitle}</td>
-                    <td className="px-5 py-4 font-semibold text-gold-soft">{app.time}</td>
+                    <td className="px-5 py-4">
+                      <div className="text-white/80">{app.serviceTitle}</div>
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="font-semibold text-gold-soft">{app.date.split('-').reverse().join('/')}</div>
+                      <div className="text-muted text-xs mt-0.5">{app.time}</div>
+                    </td>
                     <td className="px-5 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
                         app.status === 'PENDENTE' ? 'border-yellow-500/30 text-yellow-500 bg-yellow-500/10' :
