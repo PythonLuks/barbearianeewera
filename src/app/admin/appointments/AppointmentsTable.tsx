@@ -18,6 +18,7 @@ type Appointment = {
 
 export default function AppointmentsTable({ appointments }: { appointments: Appointment[] }) {
   const [isPending, startTransition] = useTransition();
+  const [deletingId, setDeletingId] = React.useState<string | null>(null);
 
   const handleStatusChange = (id: string, status: "PENDENTE" | "CONFIRMADO" | "CANCELADO") => {
     startTransition(() => {
@@ -25,12 +26,21 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
     });
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm("Tem certeza que deseja excluir permanentemente este agendamento?")) {
+  const handleDeleteRequest = (id: string) => {
+    setDeletingId(id);
+  };
+
+  const confirmDelete = () => {
+    if (deletingId) {
       startTransition(() => {
-        deleteAppointmentAction(id);
+        deleteAppointmentAction(deletingId);
+        setDeletingId(null);
       });
     }
+  };
+
+  const cancelDelete = () => {
+    setDeletingId(null);
   };
 
   if (appointments.length === 0) {
@@ -99,7 +109,7 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                     )}
                     <Button
                       variant="secondary"
-                      onClick={() => handleDelete(app.id)}
+                      onClick={() => handleDeleteRequest(app.id)}
                       disabled={isPending}
                       className="px-2 py-1.5 h-auto border-transparent hover:border-red-500/20 text-red-400 hover:text-red-300 hover:bg-red-500/10"
                       title="Excluir"
@@ -166,7 +176,7 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
               )}
               <Button
                 variant="secondary"
-                onClick={() => handleDelete(app.id)}
+                onClick={() => handleDeleteRequest(app.id)}
                 disabled={isPending}
                 className="py-2 px-3 h-auto border-transparent hover:border-red-500/20 text-red-400 hover:text-red-300 hover:bg-red-500/10"
               >
@@ -176,6 +186,39 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
           </div>
         ))}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deletingId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-surface border border-border/20 p-6 rounded-2xl max-w-sm w-full shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-4 mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-serif text-white text-center mb-2">Excluir Agendamento?</h3>
+            <p className="text-muted text-sm text-center mb-6">
+              Você tem certeza que deseja excluir este agendamento? Essa ação não pode ser desfeita.
+            </p>
+            <div className="flex gap-3">
+              <Button 
+                variant="secondary" 
+                onClick={cancelDelete} 
+                className="flex-1"
+                disabled={isPending}
+              >
+                Cancelar
+              </Button>
+              <Button 
+                variant="primary" 
+                onClick={confirmDelete} 
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white border-none"
+                disabled={isPending}
+              >
+                {isPending ? "Excluindo..." : "Sim, excluir"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
