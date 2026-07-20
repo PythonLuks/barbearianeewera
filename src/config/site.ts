@@ -14,8 +14,7 @@ export const siteConfig = {
     mapsUrl: "#",
   },
   businessHours: [
-    { days: "Segunda a Sexta", hours: "09h às 20h" },
-    { days: "Sábado", hours: "09h às 18h" },
+    { days: "Segunda a Sábado", hours: "09h às 12h / 14h às 20h" },
     { days: "Domingo", hours: "Fechado" },
   ],
   navLinks: [

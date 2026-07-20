@@ -29,11 +29,20 @@ export function generateTimeSlots(startTime: string, endTime: string, intervalMi
 
 // Mock logic to simulate availability based on Barber and Date
 export function getAvailableSlots(barberId: string, date: Date, durationMinutes: number): TimeSlot[] {
-  // Barbers work from 09:00 to 19:00
-  const allSlots = generateTimeSlots("09:00", "19:00", 30);
+  // Morning shift: 09:00 to 12:00
+  const morningSlots = generateTimeSlots("09:00", "12:00", 30);
+  // Afternoon shift: 14:00 to 20:00
+  const afternoonSlots = generateTimeSlots("14:00", "20:00", 30);
+  
+  const allSlots = [...morningSlots, ...afternoonSlots];
   
   // Format date to string for mocking
   const dateStr = date.toISOString().split('T')[0];
+
+  // If it's Sunday (0), return no available slots since they are closed
+  if (date.getDay() === 0) {
+    return allSlots.map(time => ({ time, available: false }));
+  }
 
   // We simulate some busy slots based on a hash of date + barberId
   // For demonstration, we explicitly hardcode some rules:
