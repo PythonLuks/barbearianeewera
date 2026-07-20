@@ -19,3 +19,15 @@ export async function deleteAppointmentAction(id: string) {
   revalidatePath("/admin");
   revalidatePath("/admin/appointments");
 }
+
+export async function resetTodayAction(dateStr: string) {
+  const appointments = await db.getAppointments();
+  const todayApps = appointments.filter(a => a.date === dateStr);
+  
+  for (const app of todayApps) {
+    await db.deleteAppointment(app.id);
+  }
+  
+  revalidatePath("/admin");
+  revalidatePath("/admin/appointments");
+}

@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import { CalendarDays, Users, Clock, CheckCircle, XCircle, UserCheck } from "lucide-react";
 import { checkAuth } from "@/app/actions/auth";
+import { resetTodayAction } from "@/app/actions/admin";
+import { ResetDayButton } from "./ResetDayButton";
 
 export const dynamic = "force-dynamic";
 
@@ -22,18 +24,14 @@ export default async function AdminDashboard() {
   const confirmed = todayAppointments.filter(a => a.status === "CONFIRMADO").length;
   const cancelled = todayAppointments.filter(a => a.status === "CANCELADO").length;
   
-  // Total de clientes APENAS de hoje e APENAS confirmados
-  const uniqueClients = new Set(
-    todayAppointments
-      .filter(a => a.status === "CONFIRMADO")
-      .map(a => a.customerPhone)
-  ).size;
+  // Total de clientes (contando todos os agendamentos confirmados)
+  const totalClientes = confirmed;
 
   const formattedDate = new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   const stats = [
     { title: "Agendamentos Hoje", value: todayAppointments.length, icon: CalendarDays, color: "text-blue-400" },
-    { title: "Total de Clientes", value: uniqueClients, icon: Users, color: "text-purple-400" },
+    { title: "Clientes Atendidos", value: totalClientes, icon: Users, color: "text-purple-400" },
     { title: "Pendentes", value: pending, icon: Clock, color: "text-yellow-400" },
     { title: "Confirmados", value: confirmed, icon: CheckCircle, color: "text-green-400" },
     { title: "Cancelados", value: cancelled, icon: XCircle, color: "text-red-400" },
@@ -41,11 +39,12 @@ export default async function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-serif text-white">Dashboard</h1>
           <p className="text-muted mt-1 capitalize">{formattedDate}</p>
         </div>
+        <ResetDayButton dateStr={todayStr} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
