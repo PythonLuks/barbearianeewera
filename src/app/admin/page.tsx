@@ -74,44 +74,79 @@ export default async function AdminDashboard() {
             Nenhum agendamento futuro encontrado.
           </div>
         ) : (
-          <div className="overflow-x-auto custom-scrollbar">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-background-deep/50 text-xs uppercase tracking-wider text-muted">
-                  <th className="px-5 py-3 font-medium">Cliente</th>
-                  <th className="px-5 py-3 font-medium">Serviço</th>
-                  <th className="px-5 py-3 font-medium">Horário</th>
-                  <th className="px-5 py-3 font-medium">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/10">
-                {upcomingAppointments.map((app, idx) => (
-                  <tr key={idx} className="hover:bg-white/5 transition-colors text-sm">
-                    <td className="px-5 py-4">
-                      <div className="font-medium text-white">{app.customerName}</div>
-                      <div className="text-muted text-xs mt-0.5">{app.customerPhone}</div>
-                    </td>
-                    <td className="px-5 py-4">
-                      <div className="text-white/80">{app.serviceTitle}</div>
-                    </td>
-                    <td className="px-5 py-4">
-                      <div className="font-semibold text-gold-soft">{app.date.split('-').reverse().join('/')}</div>
-                      <div className="text-muted text-xs mt-0.5">{app.time}</div>
-                    </td>
-                    <td className="px-5 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
-                        app.status === 'PENDENTE' ? 'border-yellow-500/30 text-yellow-500 bg-yellow-500/10' :
-                        app.status === 'CONFIRMADO' ? 'border-green-500/30 text-green-500 bg-green-500/10' :
-                        'border-red-500/30 text-red-500 bg-red-500/10'
-                      }`}>
-                        {app.status}
-                      </span>
-                    </td>
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto custom-scrollbar">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-background-deep/50 text-xs uppercase tracking-wider text-muted">
+                    <th className="px-5 py-3 font-medium">Cliente</th>
+                    <th className="px-5 py-3 font-medium">Serviço</th>
+                    <th className="px-5 py-3 font-medium">Horário</th>
+                    <th className="px-5 py-3 font-medium">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border/10">
+                  {upcomingAppointments.map((app, idx) => (
+                    <tr key={idx} className="hover:bg-white/5 transition-colors text-sm">
+                      <td className="px-5 py-4">
+                        <div className="font-medium text-white">{app.customerName}</div>
+                        <div className="text-muted text-xs mt-0.5">{app.customerPhone}</div>
+                      </td>
+                      <td className="px-5 py-4">
+                        <div className="text-white/80">{app.serviceTitle}</div>
+                      </td>
+                      <td className="px-5 py-4">
+                        <div className="font-semibold text-gold-soft">{app.date.split('-').reverse().join('/')}</div>
+                        <div className="text-muted text-xs mt-0.5">{app.time}</div>
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
+                          app.status === 'PENDENTE' ? 'border-yellow-500/30 text-yellow-500 bg-yellow-500/10' :
+                          app.status === 'CONFIRMADO' ? 'border-green-500/30 text-green-500 bg-green-500/10' :
+                          'border-red-500/30 text-red-500 bg-red-500/10'
+                        }`}>
+                          {app.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden flex flex-col divide-y divide-border/10">
+              {upcomingAppointments.map((app, idx) => (
+                <div key={idx} className="p-4 flex flex-col gap-3 hover:bg-white/5 transition-colors">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="font-semibold text-white">{app.customerName}</div>
+                      <div className="text-muted text-xs">{app.customerPhone}</div>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-[10px] font-medium border ${
+                      app.status === 'PENDENTE' ? 'border-yellow-500/30 text-yellow-500 bg-yellow-500/10' :
+                      app.status === 'CONFIRMADO' ? 'border-green-500/30 text-green-500 bg-green-500/10' :
+                      'border-red-500/30 text-red-500 bg-red-500/10'
+                    }`}>
+                      {app.status}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center text-sm bg-background-deep/50 p-3 rounded-lg border border-border/10">
+                    <div>
+                      <div className="text-muted text-[10px] uppercase mb-1">Data / Hora</div>
+                      <div className="text-gold-soft font-medium">{app.date.split('-').reverse().join('/')} - {app.time}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-muted text-[10px] uppercase mb-1">Serviço</div>
+                      <div className="text-white/80">{app.serviceTitle}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
