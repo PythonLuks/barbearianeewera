@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useScheduling } from "@/contexts/SchedulingContext";
-import { getAvailableSlots, TimeSlot } from "@/lib/schedulingLogic";
+import { TimeSlot } from "@/lib/schedulingLogic";
+import { fetchAvailableSlots } from "@/app/actions/scheduling";
 import { Button } from "@/components/ui/Button";
 
 export function StepDateTime() {
@@ -8,19 +9,32 @@ export function StepDateTime() {
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
   const [selectedDateState, setSelectedDateState] = useState<Date>(state.date || new Date());
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    if (state.barber && state.service) {
-      const slots = getAvailableSlots(state.barber.id, selectedDateState, state.service.duration);
-      setAvailableSlots(slots);
-      
-      // If previously selected time is not available in new date, clear it
-      if (state.time) {
-        const slotStillValid = slots.find(s => s.time === state.time && s.available);
-        if (!slotStillValid) {
-          setTime(""); // This will temporarily break the type if we expect strict non-empty, but we handle it
+    async function fetchSlots() {
+      if (state.barber && state.service) {
+        setIsLoading(true);
+        try {
+          const dateStr = selectedDateState.toISOString().split('T')[0];
+          const slots = await fetchAvailableSlots(state.barber.id, dateStr, state.service.duration);
+          setAvailableSlots(slots);
+          
+          // If previously selected time is not available in new date, clear it
+          if (state.time) {
+            const slotStillValid = slots.find(s => s.time === state.time && s.available);
+            if (!slotStillValid) {
+              setTime("");
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching slots:", error);
+        } finally {
+          setIsLoading(false);
         }
       }
     }
+    fetchSlots();
   }, [selectedDateState, state.barber, state.service, state.time, setTime]);
 
   const handleDateSelect = (d: Date) => {
@@ -72,10 +86,13 @@ export function StepDateTime() {
           </div>
         </div>
 
-        {/* Time Slots */}
         <div>
           <p className="text-sm text-muted mb-3">Horários disponíveis</p>
-          {availableSlots.filter(s => s.available).length === 0 ? (
+          {isLoading ? (
+            <div className="p-4 rounded-xl border border-border/20 bg-surface/50 text-center text-muted text-sm animate-pulse">
+              Carregando horários...
+            </div>
+          ) : availableSlots.filter(s => s.available).length === 0 ? (
             <div className="p-4 rounded-xl border border-border/20 bg-surface/50 text-center text-muted text-sm">
               Nenhum horário disponível para este dia.
             </div>

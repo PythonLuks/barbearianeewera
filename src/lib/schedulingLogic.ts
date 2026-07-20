@@ -1,3 +1,6 @@
+import { db } from "@/lib/db";
+import { Barber } from "@/contexts/SchedulingContext";
+
 export type TimeSlot = {
   time: string;
   available: boolean;
@@ -27,42 +30,50 @@ export function generateTimeSlots(startTime: string, endTime: string, intervalMi
   return slots;
 }
 
-// Mock logic to simulate availability based on Barber and Date
-export function getAvailableSlots(barberId: string, date: Date, durationMinutes: number): TimeSlot[] {
-  // Morning shift: 09:00 to 12:00
-  const morningSlots = generateTimeSlots("09:00", "12:00", 30);
-  // Afternoon shift: 14:00 to 20:00
-  const afternoonSlots = generateTimeSlots("14:00", "20:00", 30);
-  
-  const allSlots = [...morningSlots, ...afternoonSlots];
-  
-  // Format date to string for mocking
+// Async logic to fetch availability dynamically from the database
+export async function getAvailableSlotsDynamic(barberId: string, date: Date, durationMinutes: number): Promise<TimeSlot[]> {
+  const dayOfWeek = date.getDay(); // 0-6
   const dateStr = date.toISOString().split('T')[0];
 
-  // If it's Sunday (0), return no available slots since they are closed
-  if (date.getDay() === 0) {
-    return allSlots.map(time => ({ time, available: false }));
+  // 1. Check if the date is entirely blocked
+  const blockedDates = await db.getBlockedDates();
+  if (blockedDates.some(bd => bd.date === dateStr)) {
+    return []; // Totally blocked
   }
 
-  // We simulate some busy slots based on a hash of date + barberId
-  // For demonstration, we explicitly hardcode some rules:
+  // 2. Get business settings for this day of week
+  const allSettings = await db.getBusinessSettings();
+  const daySettings = allSettings.find(s => s.dayOfWeek === dayOfWeek);
+
+  if (!daySettings || !daySettings.isOpen) {
+    return []; // Closed on this day
+  }
+
+  // Generate slots for the day
+  // If lunch break is defined, we split into morning and afternoon
+  let allSlots: string[] = [];
+  if (daySettings.lunchStart && daySettings.lunchEnd) {
+    const morningSlots = generateTimeSlots(daySettings.openTime, daySettings.lunchStart, daySettings.slotIntervalMinutes);
+    const afternoonSlots = generateTimeSlots(daySettings.lunchEnd, daySettings.closeTime, daySettings.slotIntervalMinutes);
+    allSlots = [...morningSlots, ...afternoonSlots];
+  } else {
+    allSlots = generateTimeSlots(daySettings.openTime, daySettings.closeTime, daySettings.slotIntervalMinutes);
+  }
+
+  // 3. Fetch existing appointments for the given barber on the given date
+  const appointments = await db.getAppointments();
   const busySlots = new Set<string>();
+  
+  appointments.forEach(app => {
+    if (app.barberId === barberId && app.date === dateStr && app.status !== "CANCELADO") {
+      busySlots.add(app.time);
+      // If service is longer than interval, we should ideally block subsequent slots too.
+      // Assuming a simplistic 30 min block per appointment for now.
+    }
+  });
 
-  if (barberId === "robson") {
-    // Robson is busy at 09:00, 10:30, and 14:00 on any date
-    busySlots.add("09:00");
-    busySlots.add("10:30");
-    busySlots.add("14:00");
-  } else if (barberId === "joaquim") {
-    // Joaquim is busy at 09:30, 11:00, and 15:30 on any date
-    busySlots.add("09:30");
-    busySlots.add("11:00");
-    busySlots.add("15:30");
-  }
-
-  // To consider a slot available for a specific duration, we must ensure that all required 30-min blocks are available.
-  // For simplicity, we just check if the slot itself and the subsequent slots needed for the duration are free.
-  const blocksNeeded = Math.ceil(durationMinutes / 30);
+  // Calculate availability based on duration
+  const blocksNeeded = Math.ceil(durationMinutes / daySettings.slotIntervalMinutes);
 
   return allSlots.map((time, index) => {
     let isAvailable = true;

@@ -8,6 +8,7 @@ export type Barber = {
   role: string;
   rating?: string;
   image?: string;
+  active?: boolean;
 };
 
 export type Service = {

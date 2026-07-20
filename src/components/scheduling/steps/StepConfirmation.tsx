@@ -1,11 +1,13 @@
 import React from "react";
 import { useScheduling } from "@/contexts/SchedulingContext";
 import { Button } from "@/components/ui/Button";
+import { createAppointment } from "@/app/actions/scheduling";
 
 export function StepConfirmation() {
   const { state, prevStep, closeModal, resetState } = useScheduling();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!state.userInfo || !state.barber || !state.service || !state.date || !state.time) return;
     
     const formattedDate = state.date.toLocaleDateString("pt-BR", {
@@ -37,15 +39,33 @@ ${state.userInfo.phone}
 Aguardo confirmação.`;
 
     const encodedMessage = encodeURIComponent(message);
-    // Assuming the existing whatsapp number
     const whatsappNumber = "558184049137";
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-    // Open WhatsApp in new tab
-    window.open(whatsappUrl, "_blank");
-    
-    // Close modal and reset
-    resetState();
+    setIsSubmitting(true);
+    try {
+      await createAppointment({
+        customerName: state.userInfo.name,
+        customerPhone: state.userInfo.phone,
+        barberId: state.barber.id,
+        serviceTitle: state.service.title,
+        servicePrice: state.service.price,
+        serviceDuration: state.service.duration,
+        date: state.date.toISOString().split('T')[0],
+        time: state.time
+      });
+      
+      // Open WhatsApp in new tab
+      window.open(whatsappUrl, "_blank");
+      
+      // Close modal and reset
+      resetState();
+    } catch (error) {
+      console.error("Failed to save appointment", error);
+      alert("Houve um erro ao salvar o agendamento. Tente novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -113,9 +133,10 @@ Aguardo confirmação.`;
         </Button>
         <Button 
           onClick={handleConfirm} 
+          disabled={isSubmitting}
           className="w-full sm:w-2/3 order-1 sm:order-2"
         >
-          CONFIRMAR AGENDAMENTO
+          {isSubmitting ? "SALVANDO..." : "CONFIRMAR AGENDAMENTO"}
         </Button>
       </div>
     </div>
