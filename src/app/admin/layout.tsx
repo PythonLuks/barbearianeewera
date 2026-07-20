@@ -17,7 +17,6 @@ export default async function AdminLayout({
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Agendamentos", href: "/admin/appointments", icon: CalendarDays },
     { name: "Funcionamento", href: "/admin/settings/hours", icon: Clock },
-    { name: "Configurações", href: "/admin/settings", icon: Settings },
   ];
 
   return (

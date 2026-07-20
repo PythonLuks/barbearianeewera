@@ -2,6 +2,8 @@ import React from "react";
 import { db } from "@/lib/db";
 import AppointmentsTable from "./AppointmentsTable";
 
+export const dynamic = "force-dynamic";
+
 export default async function AppointmentsPage() {
   const appointments = await db.getAppointments();
   

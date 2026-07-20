@@ -6,6 +6,7 @@ import { createAppointment } from "@/app/actions/scheduling";
 export function StepConfirmation() {
   const { state, prevStep, closeModal, resetState } = useScheduling();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showSuccess, setShowSuccess] = React.useState(false);
 
   const handleConfirm = async () => {
     if (!state.userInfo || !state.barber || !state.service || !state.date || !state.time) return;
@@ -16,27 +17,27 @@ export function StepConfirmation() {
       year: "numeric"
     });
 
-    const message = `📅 NOVO AGENDAMENTO
+    const message = `NOVO AGENDAMENTO
 
-👤 Cliente:
+Cliente:
 ${state.userInfo.name}
 
-💈 Barbeiro:
+Barbeiro:
 ${state.barber.name}
 
-✂️ Serviço:
+Servico:
 ${state.service.title}
 
-📆 Data:
+Data:
 ${formattedDate}
 
-🕒 Horário:
+Horario:
 ${state.time}
 
-📱 Telefone:
+Telefone:
 ${state.userInfo.phone}
 
-Aguardo confirmação.`;
+Aguardo confirmacao.`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappNumber = "558184049137";
@@ -55,11 +56,15 @@ Aguardo confirmação.`;
         time: state.time
       });
       
-      // Open WhatsApp in new tab
-      window.open(whatsappUrl, "_blank");
       
-      // Close modal and reset
-      resetState();
+      setShowSuccess(true);
+      
+      // Espera um tempo para a animação antes de redirecionar
+      setTimeout(() => {
+        window.open(whatsappUrl, "_blank");
+        resetState();
+      }, 2500);
+      
     } catch (error) {
       console.error("Failed to save appointment", error);
       alert("Houve um erro ao salvar o agendamento. Tente novamente.");
@@ -67,6 +72,22 @@ Aguardo confirmação.`;
       setIsSubmitting(false);
     }
   };
+
+  if (showSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full animate-in zoom-in duration-500 fade-in">
+        <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-in slide-in-from-bottom-4 duration-500 delay-150 fade-in fill-mode-backwards"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 className="text-2xl font-serif text-white mb-2 text-center animate-in slide-in-from-bottom-4 duration-500 delay-200 fade-in fill-mode-backwards">
+          Horário Marcado!
+        </h3>
+        <p className="text-muted text-center max-w-[250px] animate-in slide-in-from-bottom-4 duration-500 delay-300 fade-in fill-mode-backwards">
+          Seu agendamento foi reservado. Redirecionando para o WhatsApp...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-300 flex flex-col h-full">
