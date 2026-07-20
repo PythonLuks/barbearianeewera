@@ -1,10 +1,11 @@
-import React from "react";
 import { db } from "@/lib/db";
 import { CalendarDays, Users, Clock, CheckCircle, XCircle, UserCheck } from "lucide-react";
+import { checkAuth } from "@/app/actions/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
+  await checkAuth();
   const appointments = await db.getAppointments();
   
   // Calculate stats for today

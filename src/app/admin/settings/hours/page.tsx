@@ -1,8 +1,12 @@
 import React from "react";
 import { db } from "@/lib/db";
 import HoursForm from "./HoursForm";
+import { checkAuth } from "@/app/actions/auth";
 
-export default async function HoursPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SettingsHoursPage() {
+  await checkAuth();
   const settings = await db.getBusinessSettings();
 
   return (
