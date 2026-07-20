@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useTransition } from "react";
-import { updateAppointmentStatusAction } from "@/app/actions/admin";
+import { updateAppointmentStatusAction, deleteAppointmentAction } from "@/app/actions/admin";
 import { Button } from "@/components/ui/Button";
+import { Trash2 } from "lucide-react";
 
 type Appointment = {
   id: string;
@@ -22,6 +23,14 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
     startTransition(() => {
       updateAppointmentStatusAction(id, status);
     });
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Tem certeza que deseja excluir permanentemente este agendamento?")) {
+      startTransition(() => {
+        deleteAppointmentAction(id);
+      });
+    }
   };
 
   if (appointments.length === 0) {
@@ -88,6 +97,15 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                         Cancelar
                       </Button>
                     )}
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleDelete(app.id)}
+                      disabled={isPending}
+                      className="px-2 py-1.5 h-auto border-transparent hover:border-red-500/20 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                      title="Excluir"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -146,6 +164,14 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                   Cancelar
                 </Button>
               )}
+              <Button
+                variant="secondary"
+                onClick={() => handleDelete(app.id)}
+                disabled={isPending}
+                className="py-2 px-3 h-auto border-transparent hover:border-red-500/20 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
             </div>
           </div>
         ))}

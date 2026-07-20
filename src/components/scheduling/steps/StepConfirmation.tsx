@@ -61,7 +61,7 @@ Aguardo confirmacao.`;
       
       // Espera um tempo para a animação antes de redirecionar
       setTimeout(() => {
-        window.open(whatsappUrl, "_blank");
+        window.location.href = whatsappUrl;
         resetState();
       }, 2500);
       

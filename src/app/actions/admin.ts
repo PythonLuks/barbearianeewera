@@ -13,3 +13,9 @@ export async function updateBusinessSettingsAction(settings: any[]) {
   await db.updateBusinessSettings(settings);
   revalidatePath("/admin/settings/hours");
 }
+
+export async function deleteAppointmentAction(id: string) {
+  await db.deleteAppointment(id);
+  revalidatePath("/admin");
+  revalidatePath("/admin/appointments");
+}

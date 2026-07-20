@@ -7,14 +7,6 @@ export const dynamic = "force-dynamic";
 export default async function AppointmentsPage() {
   const appointments = await db.getAppointments();
   
-  // Sort by date (descending) and then by time (descending)
-  const sortedAppointments = [...appointments].sort((a, b) => {
-    if (a.date !== b.date) {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    }
-    return b.time.localeCompare(a.time);
-  });
-
   return (
     <div className="space-y-6">
       <div>
@@ -22,7 +14,7 @@ export default async function AppointmentsPage() {
         <p className="text-muted mt-1">Gerencie todos os agendamentos da barbearia</p>
       </div>
 
-      <AppointmentsTable appointments={sortedAppointments} />
+      <AppointmentsTable appointments={appointments} />
     </div>
   );
 }

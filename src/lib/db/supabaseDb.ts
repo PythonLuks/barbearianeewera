@@ -146,6 +146,14 @@ export const db = {
     } as Appointment;
   },
 
+  deleteAppointment: async (id: string) => {
+    const { error } = await supabase.from('appointments').delete().eq('id', id);
+    if (error) {
+      console.error("Error deleting appointment:", error);
+      throw error;
+    }
+  },
+
   // Blocked Dates fallback (not used dynamically right now, but kept for interface match)
   getBlockedDates: async () => [] as { id: string; date: string; reason: string }[]
 };
