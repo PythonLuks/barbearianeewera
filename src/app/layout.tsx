@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Inter } from "next/font/google";
 import "./globals.css";
+import { SchedulingProvider } from "@/contexts/SchedulingContext";
+import { SchedulingModal } from "@/components/scheduling/SchedulingModal";
 
 import localFont from "next/font/local";
 
@@ -45,7 +47,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${coolvetica.variable} ${bodoni.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col">
-        {children}
+        <SchedulingProvider>
+          {children}
+          <SchedulingModal />
+        </SchedulingProvider>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { BrandSeal } from "@/components/ui/BrandSeal";
+import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 import { siteConfig } from "@/config/site";
 
 export function HeroSection() {
@@ -60,10 +61,10 @@ export function HeroSection() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 mb-16 lg:mb-0">
-              <Button href={siteConfig.whatsappUrl} variant="primary" className="gap-2 group">
+              <ScheduleButton variant="primary" className="gap-2 group">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                 Agendar Agora
-              </Button>
+              </ScheduleButton>
               <Button href="#servicos" variant="secondary" className="gap-2 group">
                 Ver Serviços
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6"/></svg>

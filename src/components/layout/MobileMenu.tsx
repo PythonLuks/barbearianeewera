@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/Button";
+import { useScheduling } from "@/contexts/SchedulingContext";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const { openModal } = useScheduling();
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -39,9 +42,11 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       <div className="mt-auto flex flex-col gap-4">
         <Button
           variant="primary"
-          href={siteConfig.whatsappUrl}
+          onClick={() => {
+            onClose();
+            openModal();
+          }}
           className="w-full"
-          onClick={onClose}
         >
           Agendar horário
         </Button>

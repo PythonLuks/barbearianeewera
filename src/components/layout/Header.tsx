@@ -7,10 +7,12 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
+import { useScheduling } from "@/contexts/SchedulingContext";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openModal } = useScheduling();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +59,7 @@ export function Header() {
           <div className="flex items-center gap-4 z-50">
             <Button
               variant="primary"
-              href={siteConfig.whatsappUrl}
+              onClick={openModal}
               className="hidden md:inline-flex py-3 px-6 gap-2 text-xs"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>

@@ -4,6 +4,8 @@ import React from "react";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline";
   href?: string;
+  target?: string;
+  rel?: string;
   children: React.ReactNode;
 }
 
@@ -19,7 +21,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (href) {
       return (
-        <a href={href} className={cn(baseStyles, variants[variant], className)}>
+        <a href={href} target={props.target} rel={props.rel} className={cn(baseStyles, variants[variant], className)}>
           {children}
         </a>
       );
