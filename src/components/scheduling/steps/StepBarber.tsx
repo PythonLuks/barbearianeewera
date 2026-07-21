@@ -3,8 +3,8 @@ import { useScheduling, Barber } from "@/contexts/SchedulingContext";
 import { User } from "lucide-react"; // Import an icon if no image is provided
 
 const barbers: Barber[] = [
-  { id: "robson", name: "Robson", role: "Barbeiro Sênior", rating: "5.0 ★" },
-  { id: "joaquim", name: "Joaquim", role: "Especialista em Degradê", rating: "4.8 ★" },
+  { id: "robson", name: "Profissional Robson", role: "Barbeiro Sênior", rating: "5.0 ★" },
+  { id: "joaquim", name: "Profissional Joaquim", role: "Barbeiro Sênior", rating: "4.8 ★" },
 ];
 
 export function StepBarber() {
