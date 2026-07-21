@@ -2,12 +2,14 @@ import React from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 
+import nevouImg from "../../../assets/reference/nevou.jpeg";
+
 export function GallerySection() {
   const images = [
     { src: "/images/gallery/corte-1.png", objectPosition: "center" },
     { src: "/images/gallery/corte-2.png", objectPosition: "center" },
     { src: "/images/gallery/corte-3.png", objectPosition: "center" },
-    { src: "/images/gallery/corte-4.png", objectPosition: "center" },
+    { src: nevouImg, objectPosition: "center" },
   ];
 
   return (
@@ -33,8 +35,8 @@ export function GallerySection() {
                 style={{ objectPosition: img.objectPosition }}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
               />
-              <div className="absolute inset-0 bg-petrol/20 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-0"></div>
-              <div className="absolute inset-0 bg-background-deep/40 transition-opacity duration-500 group-hover:opacity-10"></div>
+              <div className="hidden lg:block absolute inset-0 bg-petrol/20 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-0"></div>
+              <div className="hidden lg:block absolute inset-0 bg-background-deep/40 transition-opacity duration-500 group-hover:opacity-10"></div>
             </div>
           ))}
         </div>
