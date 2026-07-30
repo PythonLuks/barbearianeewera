@@ -14,20 +14,6 @@ export const services = [
     iconId: "scissors",
   },
   {
-    title: "Corte Tesoura",
-    description: "Corte realizado inteiramente na tesoura.",
-    price: "30$",
-    duration: 45,
-    iconId: "scissors",
-  },
-  {
-    title: "Sobrancelha",
-    description: "Alinhamento e design para destacar o olhar.",
-    price: "5$",
-    duration: 15,
-    iconId: "scissors",
-  },
-  {
     title: "Barba",
     description: "Aparar, alinhar e modelar a barba.",
     price: "15$",
@@ -37,7 +23,7 @@ export const services = [
   {
     title: "Cavanhaque",
     description: "Desenho e alinhamento perfeito do cavanhaque.",
-    price: "10$",
+    price: "13$",
     duration: 20,
     iconId: "scissors",
   },
@@ -49,17 +35,24 @@ export const services = [
     iconId: "scissors",
   },
   {
+    title: "Limpeza de Pele",
+    description: "Remoção de impurezas e revitalização do rosto.",
+    price: "18$",
+    duration: 30,
+    iconId: "scissors",
+  },
+  {
     title: "Depilação Nasal",
     description: "Higiene e cuidado com cera para os pelos do nariz.",
-    price: "15$",
+    price: "18$",
     duration: 10,
     iconId: "scissors",
   },
   {
-    title: "Limpeza de Pele",
-    description: "Remoção de impurezas e revitalização do rosto.",
-    price: "15$",
-    duration: 30,
+    title: "Sobrancelha",
+    description: "Alinhamento e design para destacar o olhar.",
+    price: "7$",
+    duration: 15,
     iconId: "scissors",
   },
   {
@@ -86,7 +79,7 @@ export const services = [
   {
     title: "Pigmentação",
     description: "Disfarce de falhas e realce do corte ou da barba.",
-    price: "45$",
+    price: "50$",
     duration: 30,
     iconId: "scissors",
   },
