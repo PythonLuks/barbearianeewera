@@ -11,7 +11,7 @@ export const siteConfig = {
     district: "Parque Capibaribe",
     city: "São Lourenço da Mata/PE",
     zipCode: "54720-000", // Just putting a generic or empty zip code, I'll remove it if they don't want it, but wait, they didn't provide zip code. I'll just put standard. Or leave as is. Actually, I can just leave it or use "PE" for UF.
-    mapsUrl: "#",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Rua+Amadeu+Pacheco+de+Souza,+Parque+Capibaribe,+São+Lourenço+da+Mata+PE",
   },
   businessHours: [
     { days: "Segunda a Sábado", hours: "09h às 12h / 14h às 20h" },
@@ -20,8 +20,8 @@ export const siteConfig = {
   navLinks: [
     { label: "Início", href: "#inicio" },
     { label: "Sobre", href: "#sobre" },
-    { label: "Serviços", href: "#servicos" },
-    { label: "Galeria", href: "#galeria" },
+    { label: "Serviços", href: "#precos" },
+    { label: "Planos", href: "#planos" },
     { label: "Contato", href: "#contato" },
   ]
 };

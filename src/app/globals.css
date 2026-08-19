@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #061b29;
-  --color-background-deep: #03121d;
-  --color-surface: #082435;
-  --color-surface-soft: #0c2d40;
-  --color-primary: #164bff;
-  --color-primary-hover: #0f3de0;
-  --color-petrol: #0f526b;
+  --color-background: #020824;
+  --color-background-deep: #010412;
+  --color-surface: #0a1744;
+  --color-surface-soft: #122361;
+  --color-primary: #0B35D0;
+  --color-primary-hover: #0829a3;
+  --color-petrol: #1a3c96;
   --color-cream: #eee6d4;
   --color-white: #f8f7f2;
   --color-muted: #a9b4ba;
-  --color-border: rgba(209, 184, 144, 0.45);
+  --color-border: rgba(255, 255, 255, 0.15);
   --color-gold-soft: #c9aa7a;
 
   --font-serif: var(--font-coolvetica);
@@ -21,17 +21,17 @@
 
 @layer base {
   :root {
-    --background: #061b29;
-    --background-deep: #03121d;
-    --surface: #082435;
-    --surface-soft: #0c2d40;
-    --primary: #164bff;
-    --primary-hover: #0f3de0;
-    --petrol: #0f526b;
+    --background: #020824;
+    --background-deep: #010412;
+    --surface: #0a1744;
+    --surface-soft: #122361;
+    --primary: #0B35D0;
+    --primary-hover: #0829a3;
+    --petrol: #1a3c96;
     --cream: #eee6d4;
     --white: #f8f7f2;
     --muted: #a9b4ba;
-    --border: rgba(209, 184, 144, 0.45);
+    --border: rgba(255, 255, 255, 0.15);
     --gold-soft: #c9aa7a;
   }
 

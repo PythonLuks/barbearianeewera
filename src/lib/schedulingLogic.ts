@@ -43,9 +43,21 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
 
   // 2. Get business settings for this day of week
   const allSettings = await db.getBusinessSettings();
-  const daySettings = allSettings.find(s => s.dayOfWeek === dayOfWeek);
+  let daySettings = allSettings.find(s => s.dayOfWeek === dayOfWeek);
 
-  if (!daySettings || !daySettings.isOpen) {
+  if (!daySettings) {
+    daySettings = {
+      dayOfWeek: dayOfWeek,
+      isOpen: dayOfWeek !== 0, // closed on Sunday
+      openTime: "09:00",
+      closeTime: "20:00",
+      lunchStart: "12:00",
+      lunchEnd: "14:00",
+      slotIntervalMinutes: 30
+    };
+  }
+
+  if (!daySettings.isOpen) {
     return []; // Closed on this day
   }
 

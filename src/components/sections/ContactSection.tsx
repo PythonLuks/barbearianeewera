@@ -24,7 +24,7 @@ export function ContactSection() {
                 <p>CEP {siteConfig.address.zipCode}</p>
               </div>
             </div>
-            <Button variant="outline" href={siteConfig.address.mapsUrl} className="self-start text-xs py-2 px-4 gap-2">
+            <Button variant="outline" href={siteConfig.address.mapsUrl} target="_blank" rel="noopener noreferrer" className="self-start text-xs py-2 px-4 gap-2">
               VER NO MAPA
               <MapPin size={14} />
             </Button>

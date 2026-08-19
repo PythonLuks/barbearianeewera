@@ -1,9 +1,10 @@
-import React from "react";
+"use client";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { BrandSeal } from "@/components/ui/BrandSeal";
 import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
-import { siteConfig } from "@/config/site";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import corteImg from "../../../assets/reference/cortes.jpg";
 import infantilImg from "../../../assets/reference/infantil.jpg";
@@ -12,6 +13,30 @@ import nevouImg from "../../../assets/reference/nevou.jpeg";
 
 export function HeroSection() {
   const carouselImages = [corteImg, infantilImg, corteBarbaImg, nevouImg];
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const scrollToIndex = (index: number) => {
+    if (scrollRef.current) {
+      const scrollAmount = index * scrollRef.current.clientWidth;
+      scrollRef.current.scrollTo({ left: scrollAmount, behavior: "smooth" });
+      setActiveIndex(index);
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const index = Math.round(scrollRef.current.scrollLeft / scrollRef.current.clientWidth);
+        setActiveIndex(index);
+      }
+    };
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener("scroll", handleScroll);
+      return () => el.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
 
   return (
     <section id="inicio" className="relative min-h-[100dvh] pt-32 lg:pt-48 pb-12 flex flex-col justify-center overflow-hidden bg-background">
@@ -30,7 +55,7 @@ export function HeroSection() {
         />
         
         {/* Overlay subtle blue tint */}
-        <div className="absolute inset-0 bg-petrol/20 mix-blend-overlay z-10"></div>
+        <div className="absolute inset-0 bg-[#0B35D0]/10 mix-blend-overlay z-10"></div>
       </div>
 
       <Container className="relative z-20 flex-grow flex flex-col justify-center">
@@ -73,24 +98,56 @@ export function HeroSection() {
         </div>
 
         {/* Carousel & CTA */}
-        <div className="mt-8 lg:mt-12 lg:w-1/2">
-          
-          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 hide-scrollbar">
-            {carouselImages.map((img, idx) => (
-              <div key={idx} className="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0 rounded-xl overflow-hidden snap-center border-2 border-white/10">
-                <Image 
-                  src={img} 
-                  alt={`Estilo ${idx + 1}`} 
-                  fill 
-                  className="object-cover"
+        <div className="mt-8 lg:mt-12 lg:w-3/4 max-w-3xl">
+          <div className="relative group">
+            {/* Arrows */}
+            <button 
+              onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
+              disabled={activeIndex === 0}
+            >
+              <ChevronLeft />
+            </button>
+            <button 
+              onClick={() => scrollToIndex(Math.min(carouselImages.length - 1, activeIndex + 1))}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
+              disabled={activeIndex === carouselImages.length - 1}
+            >
+              <ChevronRight />
+            </button>
+
+            {/* Carousel Container */}
+            <div 
+              ref={scrollRef}
+              className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+            >
+              {carouselImages.map((img, idx) => (
+                <div key={idx} className="relative w-full aspect-video md:aspect-[21/9] flex-shrink-0 rounded-2xl overflow-hidden snap-center border-2 border-white/10">
+                  <Image 
+                    src={img} 
+                    alt={`Estilo ${idx + 1}`} 
+                    fill 
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {/* Dots */}
+            <div className="flex justify-center gap-2 mt-4">
+              {carouselImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollToIndex(idx)}
+                  className={`w-3 h-3 rounded-full transition-colors ${idx === activeIndex ? "bg-[#0B35D0]" : "bg-white/30"}`}
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           
-          <div className="mt-6 flex">
-            <ScheduleButton variant="primary" className="gap-2 group w-full sm:w-auto justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+          <div className="mt-8 flex justify-center lg:justify-start">
+            <ScheduleButton variant="primary" className="gap-2 group w-full sm:w-auto justify-center rounded-full px-8 py-4 text-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
               Agendar Agora
             </ScheduleButton>
           </div>
