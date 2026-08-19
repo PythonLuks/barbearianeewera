@@ -8,29 +8,22 @@ export function AboutSection() {
     <section id="sobre" className="relative py-20 lg:py-32 bg-background-deep overflow-hidden border-t border-border/20">
       <Container>
         <RevealOnScroll>
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
+          <div className="flex flex-col gap-16 relative">
           
-          {/* Vertical Label */}
-          <div className="hidden lg:block absolute left-0 top-20 -translate-x-full pr-12">
-            <p className="text-primary font-bold tracking-[0.3em] uppercase transform -rotate-90 origin-top-right whitespace-nowrap text-sm flex items-center gap-4">
-              <span className="text-xl leading-none rotate-90 text-gold-soft">★</span>
-              SOBRE NÓS
-            </p>
-          </div>
-          
-          <div className="lg:hidden flex items-center gap-4 text-xs font-bold tracking-[0.2em] text-primary mb-6 uppercase">
+          {/* Top Label */}
+          <div className="flex items-center gap-4 text-xs font-bold tracking-[0.2em] text-primary mb-6 uppercase">
             <span className="text-gold-soft text-lg">★</span>
             SOBRE NÓS
           </div>
 
           {/* Left Content */}
-          <div className="lg:w-1/2 flex flex-col justify-center z-10">
+          <div className="flex flex-col justify-center z-10 text-center sm:text-left">
             <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-serif uppercase leading-[1.1] text-white mb-8">
               Mais que um corte.<br />
               Uma <span className="text-primary">Experiência.</span>
             </h2>
             
-            <div className="text-muted leading-relaxed font-light space-y-6 max-w-lg">
+            <div className="text-muted leading-relaxed font-light space-y-6 max-w-2xl mx-auto sm:mx-0">
               <p>
                 A Neew Era Barbershop nasceu da vontade de unir o que é clássico
                 àquilo que é atual. Aqui, cuidamos do seu visual com técnica,
@@ -44,12 +37,12 @@ export function AboutSection() {
           </div>
 
           {/* Right Content - Images and Cards */}
-          <div className="lg:w-1/2 relative mt-10 lg:mt-0">
+          <div className="relative mt-2 lg:mt-6">
             
             {/* Background decoration frame */}
             <div className="absolute inset-0 border border-border/30 translate-x-4 -translate-y-4 z-0 hidden sm:block"></div>
             
-            <div className="relative z-10 w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[4/3] overflow-hidden group">
+            <div className="relative z-10 w-full aspect-[4/3] md:aspect-[21/9] overflow-hidden group">
               <Image
                 src="/images/recorte-fundo.png"
                 alt="Interior Neew Era Barbershop"
