@@ -18,8 +18,11 @@ export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const scrollToIndex = (index: number) => {
-    if (scrollRef.current) {
-      const scrollAmount = index * scrollRef.current.clientWidth;
+    if (scrollRef.current && scrollRef.current.children.length > 0) {
+      const childWidth = (scrollRef.current.children[0] as HTMLElement).offsetWidth;
+      // Also account for gap (assume 16px to 24px, we can get it via standard scroll left behavior but scrollBy or absolute scrollLeft is fine)
+      const gap = window.innerWidth >= 768 ? 24 : 16;
+      const scrollAmount = index * (childWidth + gap);
       scrollRef.current.scrollTo({ left: scrollAmount, behavior: "smooth" });
       setActiveIndex(index);
     }
@@ -27,8 +30,10 @@ export function HeroSection() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (scrollRef.current) {
-        const index = Math.round(scrollRef.current.scrollLeft / scrollRef.current.clientWidth);
+      if (scrollRef.current && scrollRef.current.children.length > 0) {
+        const childWidth = (scrollRef.current.children[0] as HTMLElement).offsetWidth;
+        const gap = window.innerWidth >= 768 ? 24 : 16;
+        const index = Math.round(scrollRef.current.scrollLeft / (childWidth + gap));
         setActiveIndex(index);
       }
     };
@@ -121,18 +126,18 @@ export function HeroSection() {
               {/* Carousel Container */}
               <div 
                 ref={scrollRef}
-                className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+                className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 md:gap-6 py-4"
               >
                 {carouselImages.map((img, idx) => (
-                  <div key={idx} className="relative w-full h-[350px] md:h-[450px] flex-shrink-0 rounded-2xl overflow-hidden snap-center snap-always border-2 border-white/10 bg-black/40 backdrop-blur-sm">
-                    <Image 
-                      src={img} 
-                      alt={`Estilo ${idx + 1}`} 
-                      fill 
-                      className="object-contain p-2"
-                    />
-                  </div>
-                ))}
+                <div key={idx} className="relative w-[85%] sm:w-[320px] md:w-[380px] aspect-[3/4] md:aspect-[4/5] flex-shrink-0 rounded-3xl overflow-hidden snap-center snap-always border-2 border-white/10 bg-background-deep shadow-2xl">
+                  <Image 
+                    src={img} 
+                    alt={`Estilo ${idx + 1}`} 
+                    fill 
+                    className="object-cover object-[center_20%]"
+                  />
+                </div>
+              ))}
               </div>
               
               {/* Dots */}
