@@ -1,6 +1,7 @@
 import React from "react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { Button } from "@/components/ui/Button";
 import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 import { MapPin, MessageCircle, Clock } from "lucide-react";
@@ -9,7 +10,8 @@ export function ContactSection() {
   return (
     <section id="contato" className="py-20 bg-background-deep border-t border-border/20">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
+        <RevealOnScroll>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
           
           {/* Location */}
           <div className="flex flex-col">
@@ -79,7 +81,8 @@ export function ContactSection() {
           </div>
 
 
-        </div>
+          </div>
+        </RevealOnScroll>
       </Container>
     </section>
   );

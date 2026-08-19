@@ -56,7 +56,7 @@ export const services = [
     iconId: "scissors",
   },
   {
-    title: "Desenho a Combinar",
+    title: "Desenho",
     description: "Freestyle, linhas e desenhos artísticos no cabelo.",
     price: "A Combinar",
     duration: 30,

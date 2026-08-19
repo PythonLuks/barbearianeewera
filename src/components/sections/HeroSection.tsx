@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { BrandSeal } from "@/components/ui/BrandSeal";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -59,101 +60,102 @@ export function HeroSection() {
       </div>
 
       <Container className="relative z-20 flex-grow flex flex-col justify-center">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center flex-grow">
-          
-          {/* Left Content */}
-          <div className="max-w-2xl pt-12 lg:pt-0">
-            {/* Top Label */}
-            <div className="flex items-center gap-4 mb-6 text-[10px] sm:text-xs font-bold tracking-[0.25em] text-gold-soft uppercase">
-              <span className="text-lg leading-none">★</span>
-              <span>TRADIÇÃO</span>
-              <span className="text-[8px]">•</span>
-              <span>CUIDADO</span>
-              <span className="text-[8px]">•</span>
-              <span>ATITUDE</span>
-              <span className="text-lg leading-none">★</span>
+        <RevealOnScroll>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center flex-grow">
+            
+            {/* Left Content */}
+            <div className="max-w-2xl pt-12 lg:pt-0">
+              {/* Top Label */}
+              <div className="flex items-center gap-4 mb-6 text-[10px] sm:text-xs font-bold tracking-[0.25em] text-gold-soft uppercase">
+                <span className="text-lg leading-none">★</span>
+                <span>TRADIÇÃO</span>
+                <span className="text-[8px]">•</span>
+                <span>CUIDADO</span>
+                <span className="text-[8px]">•</span>
+                <span>ATITUDE</span>
+                <span className="text-lg leading-none">★</span>
+              </div>
+
+              {/* Main Heading */}
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bodoni uppercase tracking-wider leading-[0.95] mb-8 text-white">
+                O Clássico <br />
+                <span className="text-white/90">Entra Em</span> <br />
+                Uma Nova Era.
+              </h1>
+
+              {/* Short line divider */}
+              <div className="w-16 h-1 bg-primary mb-8"></div>
+
+              {/* Description */}
+              <p className="text-base sm:text-lg text-white/80 max-w-lg mb-10 leading-relaxed font-light">
+                Corte, barba e estilo com técnica, precisão e personalidade.
+                Mais que um serviço, é sobre se sentir no seu melhor.
+              </p>
             </div>
 
-            {/* Main Heading */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bodoni uppercase tracking-wider leading-[0.95] mb-8 text-white">
-              O Clássico <br />
-              <span className="text-white/90">Entra Em</span> <br />
-              Uma Nova Era.
-            </h1>
-
-            {/* Short line divider */}
-            <div className="w-16 h-1 bg-primary mb-8"></div>
-
-            {/* Description */}
-            <p className="text-base sm:text-lg text-white/80 max-w-lg mb-10 leading-relaxed font-light">
-              Corte, barba e estilo com técnica, precisão e personalidade.
-              Mais que um serviço, é sobre se sentir no seu melhor.
-            </p>
+            {/* Right Area (Brand Seal on Desktop) */}
+            <div className="hidden lg:flex justify-end items-end pb-12">
+              <BrandSeal className="mr-8 xl:mr-16 mb-16" />
+            </div>
           </div>
 
-          {/* Right Area (Brand Seal on Desktop) */}
-          <div className="hidden lg:flex justify-end items-end pb-12">
-            <BrandSeal className="mr-8 xl:mr-16 mb-16" />
-          </div>
-        </div>
+          {/* Carousel & CTA */}
+          <div className="mt-8 lg:mt-12 lg:w-3/4 max-w-3xl">
+            <div className="relative group">
+              {/* Arrows */}
+              <button 
+                onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
+                disabled={activeIndex === 0}
+              >
+                <ChevronLeft />
+              </button>
+              <button 
+                onClick={() => scrollToIndex(Math.min(carouselImages.length - 1, activeIndex + 1))}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
+                disabled={activeIndex === carouselImages.length - 1}
+              >
+                <ChevronRight />
+              </button>
 
-        {/* Carousel & CTA */}
-        <div className="mt-8 lg:mt-12 lg:w-3/4 max-w-3xl">
-          <div className="relative group">
-            {/* Arrows */}
-            <button 
-              onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
-              disabled={activeIndex === 0}
-            >
-              <ChevronLeft />
-            </button>
-            <button 
-              onClick={() => scrollToIndex(Math.min(carouselImages.length - 1, activeIndex + 1))}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
-              disabled={activeIndex === carouselImages.length - 1}
-            >
-              <ChevronRight />
-            </button>
-
-            {/* Carousel Container */}
-            <div 
-              ref={scrollRef}
-              className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
-            >
-              {carouselImages.map((img, idx) => (
-                <div key={idx} className="relative w-full aspect-video md:aspect-[21/9] flex-shrink-0 rounded-2xl overflow-hidden snap-center border-2 border-white/10">
-                  <Image 
-                    src={img} 
-                    alt={`Estilo ${idx + 1}`} 
-                    fill 
-                    className="object-cover"
+              {/* Carousel Container */}
+              <div 
+                ref={scrollRef}
+                className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+              >
+                {carouselImages.map((img, idx) => (
+                  <div key={idx} className="relative w-full h-[350px] md:h-[450px] flex-shrink-0 rounded-2xl overflow-hidden snap-center snap-always border-2 border-white/10 bg-black/40 backdrop-blur-sm">
+                    <Image 
+                      src={img} 
+                      alt={`Estilo ${idx + 1}`} 
+                      fill 
+                      className="object-contain p-2"
+                    />
+                  </div>
+                ))}
+              </div>
+              
+              {/* Dots */}
+              <div className="flex justify-center gap-2 mt-4">
+                {carouselImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => scrollToIndex(idx)}
+                    className={`w-3 h-3 rounded-full transition-colors ${idx === activeIndex ? "bg-[#0B35D0]" : "bg-white/30"}`}
                   />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             
-            {/* Dots */}
-            <div className="flex justify-center gap-2 mt-4">
-              {carouselImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => scrollToIndex(idx)}
-                  className={`w-3 h-3 rounded-full transition-colors ${idx === activeIndex ? "bg-[#0B35D0]" : "bg-white/30"}`}
-                />
-              ))}
+            <div className="mt-8 flex justify-center lg:justify-start">
+              <ScheduleButton variant="primary" className="gap-2 group w-full sm:w-auto justify-center rounded-full px-8 py-4 text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                Agendar Agora
+              </ScheduleButton>
             </div>
-          </div>
-          
-          <div className="mt-8 flex justify-center lg:justify-start">
-            <ScheduleButton variant="primary" className="gap-2 group w-full sm:w-auto justify-center rounded-full px-8 py-4 text-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-              Agendar Agora
-            </ScheduleButton>
-          </div>
 
-        </div>
-
+          </div>
+        </RevealOnScroll>
       </Container>
     </section>
   );

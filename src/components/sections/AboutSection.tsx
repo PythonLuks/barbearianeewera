@@ -1,12 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 export function AboutSection() {
   return (
     <section id="sobre" className="relative py-20 lg:py-32 bg-background-deep overflow-hidden border-t border-border/20">
       <Container>
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
+        <RevealOnScroll>
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
           
           {/* Vertical Label */}
           <div className="hidden lg:block absolute left-0 top-20 -translate-x-full pr-12">
@@ -76,7 +78,8 @@ export function AboutSection() {
             </div>
 
           </div>
-        </div>
+          </div>
+        </RevealOnScroll>
       </Container>
     </section>
   );

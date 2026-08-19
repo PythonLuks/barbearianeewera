@@ -1,12 +1,14 @@
 import React from "react";
 import { Container } from "@/components/ui/Container";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { services } from "@/data/services";
 
 export function PricingTableSection() {
   return (
     <section id="precos" className="py-20 lg:py-32 bg-[#0B35D0] lg:bg-background border-t border-border/20">
       <Container className="max-w-3xl">
-        <div className="bg-[#0B35D0] border-2 border-white/20 p-8 md:p-12 rounded-xl shadow-2xl relative">
+        <RevealOnScroll>
+          <div className="bg-[#0B35D0] border-2 border-white/20 p-8 md:p-12 rounded-xl shadow-2xl relative">
           
           <div className="text-center mb-10">
             <h2 className="text-5xl md:text-7xl font-bodoni text-white uppercase tracking-wider mb-2" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}>
@@ -37,7 +39,8 @@ export function PricingTableSection() {
             ))}
           </div>
           
-        </div>
+          </div>
+        </RevealOnScroll>
       </Container>
     </section>
   );
