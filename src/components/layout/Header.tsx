@@ -27,7 +27,7 @@ export function Header() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled ? "bg-[#0B195C] shadow-lg py-3" : "bg-[#0B195C]/90 py-5"
+          isScrolled ? "bg-[#0B35D0] shadow-lg py-3" : "bg-[#0B35D0]/90 py-5"
         )}
       >
         <Container className="flex items-center justify-between">
