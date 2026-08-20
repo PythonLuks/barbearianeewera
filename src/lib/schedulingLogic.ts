@@ -87,12 +87,29 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
   // Calculate availability based on duration
   const blocksNeeded = Math.ceil(durationMinutes / daySettings.slotIntervalMinutes);
 
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+  const isToday = dateStr === todayStr;
+
   return allSlots.map((time, index) => {
     let isAvailable = true;
-    for (let i = 0; i < blocksNeeded; i++) {
-      if (index + i >= allSlots.length || busySlots.has(allSlots[index + i])) {
+
+    // Check if slot has already passed today
+    if (isToday) {
+      const [slotHour, slotMinute] = time.split(':').map(Number);
+      if (slotHour < currentHour || (slotHour === currentHour && slotMinute <= currentMinute)) {
         isAvailable = false;
-        break;
+      }
+    }
+
+    if (isAvailable) {
+      for (let i = 0; i < blocksNeeded; i++) {
+        if (index + i >= allSlots.length || busySlots.has(allSlots[index + i])) {
+          isAvailable = false;
+          break;
+        }
       }
     }
     return { time, available: isAvailable };
