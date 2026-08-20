@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 
-function InteractiveVideo({ src, poster }: { src: string, poster: string }) {
+function InteractiveVideo({ src, poster, label }: { src: string, poster: string, label: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -20,14 +20,18 @@ function InteractiveVideo({ src, poster }: { src: string, poster: string }) {
         <>
           <Image
             src={poster}
-            alt="Thumbnail"
+            alt={label}
             fill
             className="object-cover transition-transform duration-700 md:group-hover:scale-105"
           />
-          <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/50 text-white shadow-lg">
+          {/* Overlay to darken image slightly for play button and text visibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center transition-colors">
+            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/50 text-white shadow-lg transition-transform hover:scale-110">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </div>
+          </div>
+          <div className="absolute bottom-8 w-full text-center pointer-events-none px-4">
+            <span className="block text-white font-serif text-2xl tracking-wider uppercase drop-shadow-xl">{label}</span>
           </div>
         </>
       ) : (
@@ -68,12 +72,8 @@ export function VideoShowcaseSection() {
           <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-8 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
             {videos.map((video, idx) => (
               <div key={idx} className="flex-shrink-0 w-[85%] sm:w-[320px] md:w-auto snap-center snap-always group">
-                <div className="relative w-full aspect-[9/16] rounded-3xl overflow-hidden border-2 border-white/10 bg-black/40 shadow-2xl">
-                  <InteractiveVideo src={video.src} poster={video.poster} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
-                  <div className="absolute bottom-8 w-full text-center pointer-events-none px-4">
-                    <span className="block text-white font-serif text-2xl tracking-wider uppercase drop-shadow-xl">{video.label}</span>
-                  </div>
+                <div className="relative w-full aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl">
+                  <InteractiveVideo src={video.src} poster={video.poster} label={video.label} />
                 </div>
               </div>
             ))}
