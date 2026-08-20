@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
@@ -8,11 +8,44 @@ import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 
 function InteractiveVideo({ src, poster, label }: { src: string, poster: string, label: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    // Run once on mount
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
   const handlePlay = () => {
-    setIsPlaying(true);
+    if (!isDesktop) {
+      setIsPlaying(true);
+    }
   };
+
+  if (isDesktop) {
+    return (
+      <div className="w-full h-full relative group">
+        <video
+          ref={videoRef}
+          src={src}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+        <div className="absolute bottom-8 w-full text-center pointer-events-none px-4">
+          <span className="block text-white font-serif text-2xl tracking-wider uppercase drop-shadow-xl">{label}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full relative cursor-pointer" onClick={handlePlay}>
@@ -24,7 +57,6 @@ function InteractiveVideo({ src, poster, label }: { src: string, poster: string,
             fill
             className="object-cover transition-transform duration-700 md:group-hover:scale-105"
           />
-          {/* Overlay to darken image slightly for play button and text visibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center transition-colors">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/50 text-white shadow-lg transition-transform hover:scale-110">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
