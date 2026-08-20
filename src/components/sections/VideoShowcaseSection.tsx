@@ -57,8 +57,9 @@ function InteractiveVideo({ src, poster, label }: { src: string, poster: string,
             fill
             className="object-cover transition-transform duration-700 md:group-hover:scale-105"
           />
+          {/* Overlay to darken image slightly for play button and text visibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center transition-colors">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/50 text-white shadow-lg transition-transform hover:scale-110">
+            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center border border-white/50 text-white shadow-lg transition-transform hover:scale-110">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </div>
           </div>
