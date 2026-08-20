@@ -3,7 +3,14 @@ export const services = [
     title: "Cabelo",
     description: "Corte clássico, degradê ou moderno.",
     price: "30$",
-    duration: 30,
+    duration: 40,
+    iconId: "scissors",
+  },
+  {
+    title: "Cabelo e Barba",
+    description: "Combo completo: corte e barba.",
+    price: "45$",
+    duration: 50,
     iconId: "scissors",
   },
   {

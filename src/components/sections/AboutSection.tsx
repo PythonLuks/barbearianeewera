@@ -62,20 +62,7 @@ export function AboutSection() {
               <div className="absolute inset-0 bg-background-deep/30"></div>
             </div>
 
-            {/* Overlapping Quote Card */}
-            <div className="relative sm:absolute sm:-bottom-12 sm:-right-8 bg-background-deep p-8 md:p-12 border border-border/40 max-w-xs mt-8 sm:mt-0 z-20 mx-auto sm:mx-0 shadow-2xl">
-              <div className="text-primary mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M10 11h-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v10a4 4 0 0 1-4 4H6a1 1 0 0 1 0-2h2a2 2 0 0 0 2-2v-4z"/><path d="M20 11h-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v10a4 4 0 0 1-4 4h-2a1 1 0 0 1 0-2h2a2 2 0 0 0 2-2v-4z"/></svg>
-              </div>
-              <h3 className="font-serif text-2xl lg:text-3xl uppercase leading-tight text-white mb-6">
-                Uma Nova Era Para O Seu Estilo.
-              </h3>
-              
-              {/* Small decorative scissors */}
-              <div className="text-gold-soft flex justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" x2="8.12" y1="4" y2="15.88"/><line x1="14.47" x2="20" y1="14.48" y2="20"/><line x1="8.12" x2="12" y1="8.12" y2="12"/></svg>
-              </div>
-            </div>
+
 
           </div>
           </div>

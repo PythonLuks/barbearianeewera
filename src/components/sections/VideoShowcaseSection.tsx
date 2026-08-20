@@ -1,7 +1,46 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import { Container } from "@/components/ui/Container";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
+
+function AutoPlayVideo({ src }: { src: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoRef.current?.play().catch(() => {});
+          } else {
+            videoRef.current?.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
+      loop
+      muted
+      playsInline
+      preload="metadata"
+    />
+  );
+}
 
 export function VideoShowcaseSection() {
   const videos = [
@@ -28,14 +67,7 @@ export function VideoShowcaseSection() {
             {videos.map((video, idx) => (
               <div key={idx} className="flex-shrink-0 w-[85%] sm:w-[320px] md:w-auto snap-center snap-always group">
                 <div className="relative w-full aspect-[9/16] rounded-3xl overflow-hidden border-2 border-white/10 bg-black/40 shadow-2xl">
-                  <video 
-                    src={video.src} 
-                    className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                  />
+                  <AutoPlayVideo src={video.src} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                   <div className="absolute bottom-8 w-full text-center pointer-events-none px-4">
                     <span className="block text-white font-serif text-2xl tracking-wider uppercase drop-shadow-xl">{video.label}</span>
