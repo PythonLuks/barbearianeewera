@@ -42,6 +42,7 @@ function InteractiveVideo({ src, poster, label }: { src: string, poster: string,
           autoPlay
           controls
           playsInline
+          muted
         />
       )}
     </div>
