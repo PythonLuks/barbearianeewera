@@ -8,12 +8,12 @@ import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import corteImg from "../../../assets/reference/cortes.jpg";
-import infantilImg from "../../../assets/reference/infantil.jpg";
+import novoCorteImg from "../../../assets/reference/novo-corte.jpg";
 import corteBarbaImg from "../../../assets/reference/cortebarba.jpg";
 import nevouImg from "../../../assets/reference/nevou.jpeg";
 
 export function HeroSection() {
-  const carouselImages = [corteImg, infantilImg, corteBarbaImg, nevouImg];
+  const carouselImages = [corteImg, novoCorteImg, corteBarbaImg, nevouImg];
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
