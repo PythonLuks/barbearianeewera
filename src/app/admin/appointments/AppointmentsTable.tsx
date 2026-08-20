@@ -19,11 +19,60 @@ type Appointment = {
 export default function AppointmentsTable({ appointments }: { appointments: Appointment[] }) {
   const [isPending, startTransition] = useTransition();
   const [deletingId, setDeletingId] = React.useState<string | null>(null);
+  const [cancelingId, setCancelingId] = React.useState<string | null>(null);
 
   const handleStatusChange = (id: string, status: "PENDENTE" | "CONFIRMADO" | "CANCELADO") => {
     startTransition(() => {
       updateAppointmentStatusAction(id, status);
     });
+  };
+
+  const handleConfirmAndWhatsApp = (app: Appointment) => {
+    startTransition(() => {
+      updateAppointmentStatusAction(app.id, "CONFIRMADO");
+    });
+
+    if (app.customerPhone) {
+      const telefoneLimpo = app.customerPhone.replace(/\D/g, "");
+      const numeroWhatsApp = telefoneLimpo.startsWith("55")
+        ? telefoneLimpo
+        : `55${telefoneLimpo}`;
+
+      const formattedDate = app.date.split("-").reverse().join("/");
+      
+      const mensagem = `Olá, ${app.customerName}! 👋
+
+✅ Seu agendamento foi confirmado!
+
+📅 Data: ${formattedDate}
+🕐 Horário: ${app.time}
+✂️ Serviço: ${app.serviceTitle}
+💈 Barbeiro: ${app.barberId.charAt(0).toUpperCase() + app.barberId.slice(1)}
+
+Te esperamos! 💈✂️
+
+Obrigado por escolher a nossa barbearia!`;
+
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, "_blank");
+    }
+  };
+
+  const handleCancelRequest = (id: string) => {
+    setCancelingId(id);
+  };
+
+  const confirmCancel = () => {
+    if (cancelingId) {
+      startTransition(() => {
+        updateAppointmentStatusAction(cancelingId, "CANCELADO");
+        setCancelingId(null);
+      });
+    }
+  };
+
+  const closeCancelModal = () => {
+    setCancelingId(null);
   };
 
   const handleDeleteRequest = (id: string) => {
@@ -75,7 +124,7 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                   </td>
                   <td className="px-5 py-4">
                     <div className="text-white/80">{app.serviceTitle}</div>
-                    <div className="text-muted text-xs mt-0.5">Barbeiro ID: {app.barberId}</div>
+                    <div className="text-muted text-xs mt-0.5 capitalize">Barbeiro: {app.barberId}</div>
                   </td>
                   <td className="px-5 py-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
@@ -83,24 +132,25 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                       app.status === 'CONFIRMADO' ? 'border-green-500/30 text-green-500 bg-green-500/10' :
                       'border-red-500/30 text-red-500 bg-red-500/10'
                     }`}>
-                      {app.status}
+                      {app.status === 'CONFIRMADO' ? '✓ Confirmado' : app.status === 'PENDENTE' ? '⌛ Pendente' : '✕ Cancelado'}
                     </span>
                   </td>
                   <td className="px-5 py-4 text-right space-x-2">
                     {app.status === "PENDENTE" && (
                       <Button 
                         variant="primary" 
-                        onClick={() => handleStatusChange(app.id, "CONFIRMADO")}
+                        onClick={() => handleConfirmAndWhatsApp(app)}
                         disabled={isPending}
-                        className="px-3 py-1.5 h-auto text-xs"
+                        className="px-3 py-1.5 h-auto text-xs gap-1"
+                        title="Confirmar via WhatsApp"
                       >
-                        Confirmar
+                        ✓ Confirmar
                       </Button>
                     )}
                     {app.status !== "CANCELADO" && (
                       <Button 
                         variant="secondary" 
-                        onClick={() => handleStatusChange(app.id, "CANCELADO")}
+                        onClick={() => handleCancelRequest(app.id)}
                         disabled={isPending}
                         className="px-3 py-1.5 h-auto text-xs text-red-400 hover:text-red-300 border-red-500/20"
                       >
@@ -138,7 +188,7 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                 app.status === 'CONFIRMADO' ? 'border-green-500/30 text-green-500 bg-green-500/10' :
                 'border-red-500/30 text-red-500 bg-red-500/10'
               }`}>
-                {app.status}
+                {app.status === 'CONFIRMADO' ? '✓ Confirmado' : app.status === 'PENDENTE' ? '⌛ Pendente' : '✕ Cancelado'}
               </span>
             </div>
             
@@ -157,17 +207,17 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
               {app.status === "PENDENTE" && (
                 <Button 
                   variant="primary" 
-                  onClick={() => handleStatusChange(app.id, "CONFIRMADO")}
+                  onClick={() => handleConfirmAndWhatsApp(app)}
                   disabled={isPending}
-                  className="flex-1 py-2 h-auto text-xs"
+                  className="flex-1 py-2 h-auto text-xs gap-1"
                 >
-                  Confirmar
+                  ✓ Confirmar
                 </Button>
               )}
               {app.status !== "CANCELADO" && (
                 <Button 
                   variant="secondary" 
-                  onClick={() => handleStatusChange(app.id, "CANCELADO")}
+                  onClick={() => handleCancelRequest(app.id)}
                   disabled={isPending}
                   className="flex-1 py-2 h-auto text-xs text-red-400 hover:text-red-300 border-red-500/20"
                 >
@@ -187,6 +237,36 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
         ))}
       </div>
 
+      {/* Cancel Confirmation Modal */}
+      {cancelingId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-surface border border-border/20 p-6 rounded-2xl max-w-sm w-full shadow-2xl animate-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-serif text-white text-center mb-2">Cancelar Agendamento?</h3>
+            <p className="text-muted text-sm text-center mb-6">
+              Você tem certeza que deseja cancelar este agendamento?
+            </p>
+            <div className="flex gap-3">
+              <Button 
+                variant="secondary" 
+                onClick={closeCancelModal} 
+                className="flex-1"
+                disabled={isPending}
+              >
+                Voltar
+              </Button>
+              <Button 
+                variant="secondary" 
+                onClick={confirmCancel} 
+                className="flex-1 text-red-400 border-red-500/20 hover:bg-red-500/10"
+                disabled={isPending}
+              >
+                {isPending ? "Cancelando..." : "Sim, cancelar"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirmation Modal */}
       {deletingId && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -196,7 +276,7 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
             </div>
             <h3 className="text-xl font-serif text-white text-center mb-2">Excluir Agendamento?</h3>
             <p className="text-muted text-sm text-center mb-6">
-              Você tem certeza que deseja excluir este agendamento? Essa ação não pode ser desfeita.
+              Você tem certeza que deseja excluir este agendamento do histórico? Essa ação não pode ser desfeita.
             </p>
             <div className="flex gap-3">
               <Button 
@@ -205,7 +285,7 @@ export default function AppointmentsTable({ appointments }: { appointments: Appo
                 className="flex-1"
                 disabled={isPending}
               >
-                Cancelar
+                Voltar
               </Button>
               <Button 
                 variant="primary" 
