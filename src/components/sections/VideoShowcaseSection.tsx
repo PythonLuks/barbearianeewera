@@ -1,52 +1,54 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { ScheduleButton } from "@/components/scheduling/ScheduleButton";
 
-function AutoPlayVideo({ src }: { src: string }) {
+function InteractiveVideo({ src, poster }: { src: string, poster: string }) {
+  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            videoRef.current?.play().catch(() => {});
-          } else {
-            videoRef.current?.pause();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
 
   return (
-    <video
-      ref={videoRef}
-      src={src}
-      className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
-      loop
-      muted
-      playsInline
-      preload="metadata"
-    />
+    <div className="w-full h-full relative cursor-pointer" onClick={handlePlay}>
+      {!isPlaying ? (
+        <>
+          <Image
+            src={poster}
+            alt="Thumbnail"
+            fill
+            className="object-cover transition-transform duration-700 md:group-hover:scale-105"
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors">
+            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/50 text-white shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+          </div>
+        </>
+      ) : (
+        <video
+          ref={videoRef}
+          src={src}
+          className="w-full h-full object-cover"
+          autoPlay
+          controls
+          playsInline
+        />
+      )}
+    </div>
   );
 }
 
 export function VideoShowcaseSection() {
   const videos = [
-    { src: "/videos/pigmentacao.mp4", label: "Pigmentação" },
-    { src: "/videos/limpezadepele.mp4", label: "Limpeza de Pele" },
-    { src: "/videos/risco.mp4", label: "Risco & Detalhe" }
+    { src: "/videos/pigmentacao.mp4", poster: "/videos/pigmentacao_poster.jpg", label: "Pigmentação" },
+    { src: "/videos/limpezadepele.mp4", poster: "/videos/limpezadepele_poster.jpg", label: "Limpeza de Pele" },
+    { src: "/videos/risco.mp4", poster: "/videos/risco_poster.jpg", label: "Risco & Detalhe" }
   ];
 
   return (
@@ -67,7 +69,7 @@ export function VideoShowcaseSection() {
             {videos.map((video, idx) => (
               <div key={idx} className="flex-shrink-0 w-[85%] sm:w-[320px] md:w-auto snap-center snap-always group">
                 <div className="relative w-full aspect-[9/16] rounded-3xl overflow-hidden border-2 border-white/10 bg-black/40 shadow-2xl">
-                  <AutoPlayVideo src={video.src} />
+                  <InteractiveVideo src={video.src} poster={video.poster} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                   <div className="absolute bottom-8 w-full text-center pointer-events-none px-4">
                     <span className="block text-white font-serif text-2xl tracking-wider uppercase drop-shadow-xl">{video.label}</span>
