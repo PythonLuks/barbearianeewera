@@ -80,16 +80,17 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
     if (app.barberId === barberId && app.date === dateStr && app.status !== "CANCELADO") {
       const duration = app.serviceDuration || daySettings.slotIntervalMinutes;
       const appBlocks = Math.ceil(duration / daySettings.slotIntervalMinutes);
-      const slotIndex = allSlots.indexOf(app.time);
       
-      if (slotIndex !== -1) {
-        for (let i = 0; i < appBlocks; i++) {
-          if (slotIndex + i < allSlots.length) {
-            busySlots.add(allSlots[slotIndex + i]);
-          }
-        }
-      } else {
-        busySlots.add(app.time);
+      let currentSlotStr = app.time;
+      for (let i = 0; i < appBlocks; i++) {
+        busySlots.add(currentSlotStr);
+        
+        // Calculate the next mathematical slot
+        const [h, m] = currentSlotStr.split(':').map(Number);
+        let nextM = m + daySettings.slotIntervalMinutes;
+        let nextH = h + Math.floor(nextM / 60);
+        nextM = nextM % 60;
+        currentSlotStr = `${String(nextH).padStart(2, '0')}:${String(nextM).padStart(2, '0')}`;
       }
     }
   });
