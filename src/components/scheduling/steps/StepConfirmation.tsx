@@ -43,6 +43,13 @@ Aguardo confirmacao.`;
     const whatsappNumber = "558184049137";
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
+    const getLocalDateString = (d: Date) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
     setIsSubmitting(true);
     try {
       await createAppointment({
@@ -52,7 +59,7 @@ Aguardo confirmacao.`;
         serviceTitle: state.service.title,
         servicePrice: state.service.price,
         serviceDuration: state.service.duration,
-        date: state.date.toISOString().split('T')[0],
+        date: getLocalDateString(state.date),
         time: state.time
       });
       
@@ -65,9 +72,9 @@ Aguardo confirmacao.`;
         resetState();
       }, 2500);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to save appointment", error);
-      alert("Houve um erro ao salvar o agendamento. Tente novamente.");
+      alert(error.message || "Houve um erro ao salvar o agendamento. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }

@@ -15,7 +15,7 @@ export function generateTimeSlots(startTime: string, endTime: string, intervalMi
   let currentHour = startHour;
   let currentMinute = startMinute;
 
-  while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
+  while (currentHour < endHour || (currentHour === endHour && currentMinute < endMinute)) {
     const formattedHour = currentHour.toString().padStart(2, '0');
     const formattedMinute = currentMinute.toString().padStart(2, '0');
     slots.push(`${formattedHour}:${formattedMinute}`);
@@ -100,16 +100,22 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
   const now = new Date();
   const todayStr = now.toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
   let currentHourStr = now.toLocaleTimeString('en-US', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hour12: false });
-  // Some Node versions output "24" for midnight when hour12 is false, so we map 24 to 0
   if (currentHourStr === '24') currentHourStr = '00';
   const currentHour = parseInt(currentHourStr, 10);
   const currentMinute = parseInt(now.toLocaleTimeString('en-US', { timeZone: 'America/Sao_Paulo', minute: '2-digit' }), 10);
+  
   const isToday = dateStr === todayStr;
+  const isPastDay = dateStr < todayStr;
 
-  return allSlots.map((time, index) => {
+  return allSlots.map((time) => {
     let isAvailable = true;
 
-    // Check if slot has already passed today
+    // 1. If it's a past day, totally unavailable
+    if (isPastDay) {
+      return { time, available: false };
+    }
+
+    // 2. Check if slot has already passed today
     if (isToday) {
       const [slotHour, slotMinute] = time.split(':').map(Number);
       if (slotHour < currentHour || (slotHour === currentHour && slotMinute <= currentMinute)) {
@@ -117,14 +123,25 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
       }
     }
 
+    // 3. Verify contiguous availability for the required duration
     if (isAvailable) {
+      let currentSlotStr = time;
       for (let i = 0; i < blocksNeeded; i++) {
-        if (index + i >= allSlots.length || busySlots.has(allSlots[index + i])) {
+        // The required slot must exist in the schedule and not be busy
+        if (!allSlots.includes(currentSlotStr) || busySlots.has(currentSlotStr)) {
           isAvailable = false;
           break;
         }
+        
+        // Calculate the next required slot string mathematically
+        const [h, m] = currentSlotStr.split(':').map(Number);
+        let nextM = m + daySettings.slotIntervalMinutes;
+        let nextH = h + Math.floor(nextM / 60);
+        nextM = nextM % 60;
+        currentSlotStr = `${String(nextH).padStart(2, '0')}:${String(nextM).padStart(2, '0')}`;
       }
     }
+
     return { time, available: isAvailable };
   });
 }
