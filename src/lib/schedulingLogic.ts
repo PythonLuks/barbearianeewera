@@ -128,8 +128,8 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
     if (isAvailable) {
       let currentSlotStr = time;
       for (let i = 0; i < blocksNeeded; i++) {
-        // The required slot must exist in the schedule and not be busy
-        if (!allSlots.includes(currentSlotStr) || busySlots.has(currentSlotStr)) {
+        // The required slot must not be occupied by another appointment
+        if (busySlots.has(currentSlotStr)) {
           isAvailable = false;
           break;
         }
