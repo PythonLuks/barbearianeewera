@@ -88,9 +88,12 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
   const blocksNeeded = Math.ceil(durationMinutes / daySettings.slotIntervalMinutes);
 
   const now = new Date();
-  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-  const currentHour = now.getHours();
-  const currentMinute = now.getMinutes();
+  const todayStr = now.toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+  let currentHourStr = now.toLocaleTimeString('en-US', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hour12: false });
+  // Some Node versions output "24" for midnight when hour12 is false, so we map 24 to 0
+  if (currentHourStr === '24') currentHourStr = '00';
+  const currentHour = parseInt(currentHourStr, 10);
+  const currentMinute = parseInt(now.toLocaleTimeString('en-US', { timeZone: 'America/Sao_Paulo', minute: '2-digit' }), 10);
   const isToday = dateStr === todayStr;
 
   return allSlots.map((time, index) => {

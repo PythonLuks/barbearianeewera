@@ -11,12 +11,20 @@ export function StepDateTime() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const getLocalDateString = (d: Date) => {
+    // Ensures we get YYYY-MM-DD in the local timezone
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     async function fetchSlots() {
       if (state.barber && state.service) {
         setIsLoading(true);
         try {
-          const dateStr = selectedDateState.toISOString().split('T')[0];
+          const dateStr = getLocalDateString(selectedDateState);
           const slots = await fetchAvailableSlots(state.barber.id, dateStr, state.service.duration);
           setAvailableSlots(slots);
           
@@ -71,8 +79,8 @@ export function StepDateTime() {
             <input 
               id="date-picker"
               type="date"
-              value={selectedDateState.toISOString().split('T')[0]}
-              min={new Date().toISOString().split('T')[0]}
+              value={getLocalDateString(selectedDateState)}
+              min={getLocalDateString(new Date())}
               onChange={(e) => {
                 if(e.target.value) {
                   // Append time to avoid timezone offset issues
