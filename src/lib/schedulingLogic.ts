@@ -78,9 +78,19 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
   
   appointments.forEach(app => {
     if (app.barberId === barberId && app.date === dateStr && app.status !== "CANCELADO") {
-      busySlots.add(app.time);
-      // If service is longer than interval, we should ideally block subsequent slots too.
-      // Assuming a simplistic 30 min block per appointment for now.
+      const duration = app.serviceDuration || daySettings.slotIntervalMinutes;
+      const appBlocks = Math.ceil(duration / daySettings.slotIntervalMinutes);
+      const slotIndex = allSlots.indexOf(app.time);
+      
+      if (slotIndex !== -1) {
+        for (let i = 0; i < appBlocks; i++) {
+          if (slotIndex + i < allSlots.length) {
+            busySlots.add(allSlots[slotIndex + i]);
+          }
+        }
+      } else {
+        busySlots.add(app.time);
+      }
     }
   });
 
