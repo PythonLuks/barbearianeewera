@@ -40,7 +40,15 @@ ${state.userInfo.phone}
 Aguardo confirmacao.`;
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappNumber = "558184049137";
+    
+    // Define the default WhatsApp number (e.g., Robson or general reception)
+    let whatsappNumber = "558184049137";
+    
+    // Check if the selected barber is Joaquim and route to his number
+    if (state.barber.id === "joaquim") {
+      whatsappNumber = "5581987747931"; // Joaquim's number
+    }
+    
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
     const getLocalDateString = (d: Date) => {
