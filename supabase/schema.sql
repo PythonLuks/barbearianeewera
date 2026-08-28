@@ -60,7 +60,7 @@ CREATE TABLE appointments (
 
 INSERT INTO barbers (id, name, role, rating) VALUES 
 ('c1031b25-b825-4c07-9252-ecdb79461df2', 'Robson', 'Barbeiro Sênior', '5.0 ★'),
-('2ed83b3f-1d48-43d9-95e2-638df4832596', 'Joaquim', 'Especialista em Degradê', '4.8 ★');
+('2ed83b3f-1d48-43d9-95e2-638df4832596', 'Joaquim', 'Especialista em Degradê', '5.0 ★');
 
 INSERT INTO business_settings (day_of_week, is_open, open_time, close_time, lunch_start, lunch_end, slot_interval_minutes) VALUES
 (1, true, '09:00', '20:00', '12:00', '14:00', 30),
@@ -68,5 +68,5 @@ INSERT INTO business_settings (day_of_week, is_open, open_time, close_time, lunc
 (3, true, '09:00', '20:00', '12:00', '14:00', 30),
 (4, true, '09:00', '20:00', '12:00', '14:00', 30),
 (5, true, '09:00', '20:00', '12:00', '14:00', 30),
-(6, true, '09:00', '20:00', '12:00', '14:00', 30),
+(6, false, null, null, null, null, 30),
 (0, false, null, null, null, null, 30);

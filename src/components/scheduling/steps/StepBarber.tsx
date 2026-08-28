@@ -7,7 +7,7 @@ type BarberWithImage = Barber & { image?: string };
 
 const barbers: BarberWithImage[] = [
   { id: "robson", name: "Profissional Robson", role: "Barbeiro Sênior", rating: "5.0 ★", image: "/images/team/joaquim.jpg" },
-  { id: "joaquim", name: "Profissional Joaquim", role: "Barbeiro Sênior", rating: "4.8 ★", image: "/images/team/robson.jpg" },
+  { id: "joaquim", name: "Profissional Joaquim", role: "Barbeiro Sênior", rating: "5.0 ★", image: "/images/team/robson.jpg" },
 ];
 
 export function StepBarber() {

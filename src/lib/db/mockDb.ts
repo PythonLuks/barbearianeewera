@@ -37,7 +37,7 @@ const DB_FILE = path.join(process.cwd(), 'database.json');
 const defaultData: DbSchema = {
   barbers: [
     { id: "robson", name: "Robson", role: "Barbeiro Sênior", rating: "5.0 ★", active: true },
-    { id: "joaquim", name: "Joaquim", role: "Especialista em Degradê", rating: "4.8 ★", active: true },
+    { id: "joaquim", name: "Joaquim", role: "Especialista em Degradê", rating: "5.0 ★", active: true },
   ],
   businessSettings: [
     { dayOfWeek: 1, isOpen: true, openTime: "09:00", closeTime: "20:00", lunchStart: "12:00", lunchEnd: "14:00", slotIntervalMinutes: 30 },
@@ -45,7 +45,7 @@ const defaultData: DbSchema = {
     { dayOfWeek: 3, isOpen: true, openTime: "09:00", closeTime: "20:00", lunchStart: "12:00", lunchEnd: "14:00", slotIntervalMinutes: 30 },
     { dayOfWeek: 4, isOpen: true, openTime: "09:00", closeTime: "20:00", lunchStart: "12:00", lunchEnd: "14:00", slotIntervalMinutes: 30 },
     { dayOfWeek: 5, isOpen: true, openTime: "09:00", closeTime: "20:00", lunchStart: "12:00", lunchEnd: "14:00", slotIntervalMinutes: 30 },
-    { dayOfWeek: 6, isOpen: true, openTime: "09:00", closeTime: "20:00", lunchStart: "12:00", lunchEnd: "14:00", slotIntervalMinutes: 30 },
+    { dayOfWeek: 6, isOpen: false, openTime: "", closeTime: "", lunchStart: "", lunchEnd: "", slotIntervalMinutes: 30 },
     { dayOfWeek: 0, isOpen: false, openTime: "", closeTime: "", lunchStart: "", lunchEnd: "", slotIntervalMinutes: 30 },
   ],
   appointments: [],

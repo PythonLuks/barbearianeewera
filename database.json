@@ -11,7 +11,7 @@
       "id": "joaquim",
       "name": "Joaquim",
       "role": "Especialista em Degradê",
-      "rating": "4.8 ★",
+      "rating": "5.0 ★",
       "active": true
     }
   ],
@@ -63,11 +63,11 @@
     },
     {
       "dayOfWeek": 6,
-      "isOpen": true,
-      "openTime": "09:00",
-      "closeTime": "20:00",
-      "lunchStart": "12:00",
-      "lunchEnd": "14:00",
+      "isOpen": false,
+      "openTime": "",
+      "closeTime": "",
+      "lunchStart": "",
+      "lunchEnd": "",
       "slotIntervalMinutes": 30
     },
     {
