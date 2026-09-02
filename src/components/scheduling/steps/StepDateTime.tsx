@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 export function StepDateTime() {
   const { state, setDate, setTime, nextStep, prevStep } = useScheduling();
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
+  const [isClosed, setIsClosed] = useState(false);
   const [selectedDateState, setSelectedDateState] = useState<Date>(state.date || new Date());
 
   const [isLoading, setIsLoading] = useState(false);
@@ -25,13 +26,14 @@ export function StepDateTime() {
         setIsLoading(true);
         try {
           const dateStr = getLocalDateString(selectedDateState);
-          const slots = await fetchAvailableSlots(state.barber.id, dateStr, state.service.duration);
-          setAvailableSlots(slots);
+          const result = await fetchAvailableSlots(state.barber.id, dateStr, state.service.duration);
+          setAvailableSlots(result.slots);
+          setIsClosed(result.isClosed);
           
           // If previously selected time is not available in new date, clear it
           if (state.time) {
-            const slotStillValid = slots.find(s => s.time === state.time && s.available);
-            if (!slotStillValid) {
+            const slotStillValid = result.slots.find(s => s.time === state.time && s.available);
+            if (!slotStillValid || result.isClosed) {
               setTime("");
             }
           }
@@ -99,6 +101,10 @@ export function StepDateTime() {
           {isLoading ? (
             <div className="p-4 rounded-xl border border-border/20 bg-surface/50 text-center text-muted text-sm animate-pulse">
               Carregando horários...
+            </div>
+          ) : isClosed ? (
+            <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/10 text-center text-red-200 text-sm">
+              Neste dia a barbearia está fechada. Por favor, escolha outra data.
             </div>
           ) : availableSlots.filter(s => s.available).length === 0 ? (
             <div className="p-4 rounded-xl border border-border/20 bg-surface/50 text-center text-muted text-sm">

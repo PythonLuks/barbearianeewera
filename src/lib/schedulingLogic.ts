@@ -30,15 +30,20 @@ export function generateTimeSlots(startTime: string, endTime: string, intervalMi
   return slots;
 }
 
+export type DayAvailability = {
+  isClosed: boolean;
+  slots: TimeSlot[];
+};
+
 // Async logic to fetch availability dynamically from the database
-export async function getAvailableSlotsDynamic(barberId: string, date: Date, durationMinutes: number): Promise<TimeSlot[]> {
+export async function getAvailableSlotsDynamic(barberId: string, date: Date, durationMinutes: number): Promise<DayAvailability> {
   const dayOfWeek = date.getDay(); // 0-6
   const dateStr = date.toISOString().split('T')[0];
 
   // 1. Check if the date is entirely blocked
   const blockedDates = await db.getBlockedDates();
   if (blockedDates.some(bd => bd.date === dateStr)) {
-    return []; // Totally blocked
+    return { isClosed: true, slots: [] }; // Totally blocked
   }
 
   // 2. Get business settings for this day of week
@@ -58,7 +63,7 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
   }
 
   if (!daySettings.isOpen) {
-    return []; // Closed on this day
+    return { isClosed: true, slots: [] }; // Closed on this day
   }
 
   // Generate slots for the day
@@ -108,7 +113,7 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
   const isToday = dateStr === todayStr;
   const isPastDay = dateStr < todayStr;
 
-  return allSlots.map((time) => {
+  const computedSlots = allSlots.map((time) => {
     let isAvailable = true;
 
     // 1. If it's a past day, totally unavailable
@@ -145,4 +150,6 @@ export async function getAvailableSlotsDynamic(barberId: string, date: Date, dur
 
     return { time, available: isAvailable };
   });
+
+  return { isClosed: false, slots: computedSlots };
 }

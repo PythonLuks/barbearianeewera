@@ -35,13 +35,21 @@ export default function HoursForm({ initialSettings }: { initialSettings: Busine
       {settings.sort((a,b) => a.dayOfWeek - b.dayOfWeek).map((s) => (
         <div key={s.dayOfWeek} className="bg-surface border border-border/20 rounded-xl p-5 flex flex-col md:flex-row md:items-center gap-4">
           <div className="w-40 flex items-center gap-3">
-            <input 
-              type="checkbox" 
-              checked={s.isOpen} 
-              onChange={() => handleToggle(s.dayOfWeek)}
-              className="w-5 h-5 accent-gold-soft"
-            />
-            <span className={`font-medium ${s.isOpen ? 'text-white' : 'text-muted line-through'}`}>
+            <div 
+              onClick={() => handleToggle(s.dayOfWeek)}
+              className={`w-6 h-6 flex-shrink-0 rounded border flex items-center justify-center cursor-pointer transition-colors ${
+                s.isOpen 
+                  ? "bg-gold-soft border-gold-soft" 
+                  : "border-border/50 bg-transparent"
+              }`}
+            >
+              {s.isOpen && (
+                <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </div>
+            <span className={`font-medium cursor-pointer ${s.isOpen ? 'text-white' : 'text-muted line-through'}`} onClick={() => handleToggle(s.dayOfWeek)}>
               {DAYS[s.dayOfWeek]}
             </span>
           </div>
