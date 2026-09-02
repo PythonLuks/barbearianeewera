@@ -80,7 +80,7 @@ export default async function AdminDashboard() {
                 <thead>
                   <tr className="bg-background-deep/50 text-xs uppercase tracking-wider text-muted">
                     <th className="px-5 py-3 font-medium">Cliente</th>
-                    <th className="px-5 py-3 font-medium">Serviço</th>
+                    <th className="px-5 py-3 font-medium">Serviço / Barbeiro</th>
                     <th className="px-5 py-3 font-medium">Horário</th>
                     <th className="px-5 py-3 font-medium">Status</th>
                   </tr>
@@ -94,6 +94,7 @@ export default async function AdminDashboard() {
                       </td>
                       <td className="px-5 py-4">
                         <div className="text-white/80">{app.serviceTitle}</div>
+                        <div className="text-muted text-xs mt-0.5 capitalize">Barbeiro: {app.barberId}</div>
                       </td>
                       <td className="px-5 py-4">
                         <div className="font-semibold text-gold-soft">{app.date.split('-').reverse().join('/')}</div>
@@ -138,8 +139,9 @@ export default async function AdminDashboard() {
                       <div className="text-gold-soft font-medium">{app.date.split('-').reverse().join('/')} - {app.time}</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-muted text-[10px] uppercase mb-1">Serviço</div>
+                      <div className="text-muted text-[10px] uppercase mb-1">Serviço / Profissional</div>
                       <div className="text-white/80">{app.serviceTitle}</div>
+                      <div className="text-muted text-[10px] capitalize mt-0.5">Barbeiro: {app.barberId}</div>
                     </div>
                   </div>
                 </div>

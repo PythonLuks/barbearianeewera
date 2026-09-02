@@ -198,8 +198,9 @@ Obrigado por escolher a nossa barbearia!`;
                 <div className="text-gold-soft font-medium">{app.date.split("-").reverse().join("/")} - {app.time}</div>
               </div>
               <div>
-                <div className="text-muted text-[10px] uppercase">Serviço</div>
+                <div className="text-muted text-[10px] uppercase">Serviço / Profissional</div>
                 <div className="text-white/80 line-clamp-1">{app.serviceTitle}</div>
+                <div className="text-muted text-[10px] capitalize mt-0.5">Barbeiro: {app.barberId}</div>
               </div>
             </div>
 
