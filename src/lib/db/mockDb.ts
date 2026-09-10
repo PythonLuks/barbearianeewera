@@ -12,7 +12,7 @@ export type Appointment = {
   serviceDuration: number;
   date: string; // YYYY-MM-DD
   time: string; // HH:MM
-  status: "PENDENTE" | "CONFIRMADO" | "CANCELADO";
+  status: "PENDENTE" | "CONFIRMADO" | "CANCELADO" | "BLOQUEADO";
   createdAt: string;
 };
 

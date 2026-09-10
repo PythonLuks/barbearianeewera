@@ -16,6 +16,7 @@ export default async function AdminLayout({
   const menuItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Agendamentos", href: "/admin/appointments", icon: CalendarDays },
+    { name: "Bloqueios", href: "/admin/blocks", icon: CalendarOff },
     { name: "Funcionamento", href: "/admin/settings/hours", icon: Clock },
   ];
 

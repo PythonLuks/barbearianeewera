@@ -31,3 +31,15 @@ export async function resetTodayAction(dateStr: string) {
   revalidatePath("/admin");
   revalidatePath("/admin/appointments");
 }
+
+export async function toggleBlockedSlotAction(barberId: string, date: string, time: string, isBlocked: boolean, existingId?: string) {
+  if (isBlocked && existingId) {
+    // Unblock by deleting the block appointment
+    await db.deleteAppointment(existingId);
+  } else if (!isBlocked) {
+    // Block by adding a block appointment
+    // 30 minutes block
+    await db.addBlock(barberId, date, time, 30);
+  }
+  revalidatePath("/admin/blocks");
+}

@@ -92,7 +92,9 @@ Obrigado por escolher a nossa barbearia!`;
     setDeletingId(null);
   };
 
-  if (appointments.length === 0) {
+  const validAppointments = appointments.filter(a => a.status !== "BLOQUEADO");
+
+  if (validAppointments.length === 0) {
     return <div className="text-center p-8 text-muted bg-surface rounded-xl border border-border/20">Nenhum agendamento encontrado.</div>;
   }
 
@@ -112,7 +114,7 @@ Obrigado por escolher a nossa barbearia!`;
               </tr>
             </thead>
             <tbody className="divide-y divide-border/10">
-              {appointments.map((app) => (
+              {validAppointments.map((app) => (
                 <tr key={app.id} className="hover:bg-white/5 transition-colors text-sm">
                   <td className="px-5 py-4">
                     <div className="font-semibold text-white">{app.date.split("-").reverse().join("/")}</div>
@@ -176,7 +178,7 @@ Obrigado por escolher a nossa barbearia!`;
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {appointments.map((app) => (
+        {validAppointments.map((app) => (
           <div key={app.id} className="bg-surface border border-border/20 rounded-xl p-4 flex flex-col gap-3">
             <div className="flex justify-between items-start">
               <div>

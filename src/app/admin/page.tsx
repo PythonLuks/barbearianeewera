@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
   await checkAuth();
-  const appointments = await db.getAppointments();
+  const allAppointments = await db.getAppointments();
+  const appointments = allAppointments.filter(a => a.status !== "BLOQUEADO");
   
   // Calculate stats for today using correct Timezone (Brazil)
   const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' }); // Returns YYYY-MM-DD

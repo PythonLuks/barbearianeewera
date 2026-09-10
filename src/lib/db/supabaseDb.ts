@@ -83,7 +83,7 @@ export const db = {
       serviceDuration: a.service_duration,
       date: a.date,
       time: a.time,
-      status: a.status as "PENDENTE" | "CONFIRMADO" | "CANCELADO",
+      status: a.status as "PENDENTE" | "CONFIRMADO" | "CANCELADO" | "BLOQUEADO",
       createdAt: a.created_at
     }));
   },
@@ -150,6 +150,25 @@ export const db = {
     const { error } = await supabase.from('appointments').delete().eq('id', id);
     if (error) {
       console.error("Error deleting appointment:", error);
+      throw error;
+    }
+  },
+
+  addBlock: async (barberId: string, date: string, time: string, duration: number) => {
+    const insertData = {
+      customer_name: "BLOQUEIO",
+      customer_phone: "",
+      barber_id: barberId,
+      service_title: "Horário Bloqueado",
+      service_price: "0",
+      service_duration: duration,
+      date: date,
+      time: time,
+      status: "BLOQUEADO"
+    };
+    const { error } = await supabase.from('appointments').insert([insertData]);
+    if (error) {
+      console.error("Error inserting block:", error);
       throw error;
     }
   },
