@@ -44,8 +44,14 @@ export function StepDateTime() {
         }
       }
     }
+
+    if (!state.date) {
+      setDate(selectedDateState);
+    }
+
     fetchSlots();
-  }, [selectedDateState, state.barber, state.service, state.time, setTime]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDateState, state.barber, state.service]);
 
   const handleDateSelect = (d: Date) => {
     setSelectedDateState(d);
