@@ -168,7 +168,7 @@ export default function BlocksManager({
                   disabled={isPending}
                   onClick={() => handleToggleSlot(time, slotState.state, slotState.id)}
                   className={`p-3 rounded-lg border text-center text-sm font-medium transition-colors ${styleClasses}`}
-                  title={slotState.state === "OCUPADO" ? \`Cliente: \${slotState.name}\` : ""}
+                  title={slotState.state === "OCUPADO" ? `Cliente: ${slotState.name}` : ""}
                 >
                   {time}
                 </button>
