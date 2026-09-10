@@ -13,7 +13,7 @@ type Appointment = {
   serviceTitle: string;
   date: string;
   time: string;
-  status: "PENDENTE" | "CONFIRMADO" | "CANCELADO";
+  status: "PENDENTE" | "CONFIRMADO" | "CANCELADO" | "BLOQUEADO";
 };
 
 export default function AppointmentsTable({ appointments }: { appointments: Appointment[] }) {
