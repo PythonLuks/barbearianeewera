@@ -23,8 +23,29 @@ export const services = [
   {
     title: "Cabelo e Cavanhaque",
     description: "Combo completo: corte e cavanhaque.",
-    price: "40$",
+    price: "43$",
     duration: 40,
+    iconId: "scissors",
+  },
+  {
+    title: "Cabelo, Barba e Sobrancelha",
+    description: "Trato completo: corte, barba e alinhamento de sobrancelha.",
+    price: "52$",
+    duration: 60,
+    iconId: "scissors",
+  },
+  {
+    title: "Cabelo, Cavanhaque e Sobrancelha",
+    description: "Corte, modelagem de cavanhaque e sobrancelha alinhada.",
+    price: "50$",
+    duration: 55,
+    iconId: "scissors",
+  },
+  {
+    title: "Cabelo e Sobrancelha",
+    description: "Corte com alinhamento de sobrancelha.",
+    price: "37$",
+    duration: 45,
     iconId: "scissors",
   },
   {
